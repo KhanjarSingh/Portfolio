@@ -1,7 +1,8 @@
+import { ArrowRight, Code2, Download, Github, Linkedin, Terminal } from 'lucide-react';
+
+import { Button } from '../ui/Button';
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Download, Terminal, Code2, Linkedin, Github } from 'lucide-react';
-import { Button } from '../ui/Button';
 
 const CodeforcesIcon = ({ className }) => (
     <svg className={className} role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -84,7 +85,7 @@ const Hero = () => {
                         </a>
 
                         <a
-                            href="/Resume-Parth Tandalwade (24).pdf"
+                            href="/Parth_Tandalwade_Resume.pdf"
                             download
                             className="group inline-flex h-14 items-center justify-center rounded-full border-2 border-violet-500/50 bg-violet-500/10 backdrop-blur-sm px-8 font-semibold text-violet-300 transition-all duration-300 hover:border-violet-400 hover:bg-violet-500/20 hover:text-violet-200 hover:scale-105 active:scale-95 shadow-lg shadow-violet-500/20"
                         >
