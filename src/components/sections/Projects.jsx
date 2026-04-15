@@ -2,7 +2,7 @@ import React from 'react';
 import SectionWrapper from '../ui/SectionWrapper';
 import { Card, CardContent, CardFooter, CardHeader } from '../ui/Card';
 import { Button } from '../ui/Button';
-import { Github, ExternalLink, Smartphone, Globe, Lock, Brain, MessageSquare, ShoppingBag } from 'lucide-react';
+import { Github, ExternalLink, Smartphone, Globe, Lock, Brain, MessageSquare, ShoppingBag, Zap, Flame, Star } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import { motion } from 'framer-motion';
 
@@ -75,19 +75,85 @@ const PhoneMockup = () => (
     </div>
 );
 
+const StreaQPhoneMockup = () => (
+    <div className="w-[200px] h-[400px] bg-[#09090b] border-[8px] border-[#27272a] rounded-[2.5rem] shadow-2xl overflow-hidden relative mx-auto">
+        {/* Notch/Dynamic Island */}
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-6 bg-black rounded-full z-20 flex items-center justify-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#1e1e20]" />
+            <div className="w-12 h-1.5 rounded-full bg-[#1e1e20]" />
+        </div>
+
+        {/* Screen Content */}
+        <div className="w-full h-full bg-[#000000] flex flex-col pt-12 px-4 relative">
+            <div className="mb-6">
+                <div className="text-white font-bold text-lg">My Streaks</div>
+            </div>
+
+            <div className="space-y-2">
+                {/* GitHub Streak */}
+                <div className="w-full p-3 bg-gradient-to-r from-cyan-500/10 to-transparent rounded-xl border border-cyan-500/30 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <Flame size={18} className="text-red-400" />
+                        <div className="flex-1">
+                            <div className="h-2 w-16 bg-white/30 rounded-full" />
+                        </div>
+                    </div>
+                    <div className="text-cyan-400 font-bold text-sm">42</div>
+                </div>
+
+                {/* LeetCode Streak */}
+                <div className="w-full p-3 bg-gradient-to-r from-orange-500/10 to-transparent rounded-xl border border-orange-500/30 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <Zap size={18} className="text-yellow-400" />
+                        <div className="flex-1">
+                            <div className="h-2 w-14 bg-white/30 rounded-full" />
+                        </div>
+                    </div>
+                    <div className="text-orange-400 font-bold text-sm">28</div>
+                </div>
+
+                {/* Codeforces Streak */}
+                <div className="w-full p-3 bg-gradient-to-r from-blue-500/10 to-transparent rounded-xl border border-blue-500/30 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <Star size={18} className="text-blue-400" />
+                        <div className="flex-1">
+                            <div className="h-2 w-12 bg-white/30 rounded-full" />
+                        </div>
+                    </div>
+                    <div className="text-blue-400 font-bold text-sm">15</div>
+                </div>
+            </div>
+        </div>
+    </div>
+);
+
 const Projects = () => {
     const projectsList = [
         {
-            title: 'Todo Master Pro',
-            type: 'Mobile App',
-            description: 'A React Native productivity app featuring task prioritization, categories, and cloud sync. Designed for efficiency with a focus on gesture-driven navigation.',
-            tags: ['React Native', 'Firebase', 'Mobile UX', 'TypeScript'],
+            title: 'Knowra',
+            type: 'AI Platform',
+            description: 'A production-ready Retrieval-Augmented Generation (RAG) system that turns your GitHub repositories and local documents into an interactive, AI-powered knowledge base. Features GitHub ingestion, deep-scan PDF analysis, verified sources, and extreme lazy loading optimization.',
+            tags: ['React', 'FastAPI', 'FAISS', 'Groq', 'Tailwind', 'Framer Motion'],
             links: {
-                demo: 'https://expo.dev/accounts/khanjarsingh/projects/Full_Todo_App/builds/4c32f57a-7440-4042-8201-afc376e18e46',
-                repo: 'https://github.com/KhanjarSingh/Todo_Mobile_App'
+                demo: 'https://knowra-lemon.vercel.app/',
+                repo: 'https://github.com/KhanjarSingh/Knowra'
+            },
+            visual: 'browser',
+            icon: <Brain size={48} />,
+            color: 'from-amber-500 to-orange-500'
+        },
+        {
+            title: 'StreaQ',
+            type: 'Productivity App',
+            description: 'A streak tracking application that reminds you to complete daily tasks like GitHub commits, LeetCode problems, and Codeforces challenges. Stay consistent and motivated with streak management and permission tracking for your coding goals.',
+            tags: ['React', 'JavaScript', 'Streak Tracking', 'Task Management'],
+            links: {
+                demo: '#',
+                repo: 'https://github.com/KhanjarSingh/StreaQ.git'
             },
             visual: 'mobile',
-            color: 'from-orange-500 to-red-500'
+            icon: <Zap size={48} />,
+            color: 'from-cyan-500 to-blue-500'
         },
         {
             title: 'Codehive',
@@ -101,6 +167,19 @@ const Projects = () => {
             visual: 'browser',
             icon: <MessageSquare size={48} />,
             color: 'from-blue-500 to-cyan-500'
+        },
+        {
+            title: 'QuestLog',
+            type: 'Gamified Todo App',
+            description: 'A gamified task management mobile application built with React Native and Expo. Turn your daily tasks into epic quests and level up as you complete them! Features XP system, leaderboard, streak tracking, and priority-based rewards for completing quests.',
+            tags: ['React Native', 'Expo', 'Gamification', 'Streak Tracking', 'Mobile UX'],
+            links: {
+                demo: 'https://questlog.expo.app/',
+                repo: 'https://github.com/KhanjarSingh/QuestLog'
+            },
+            visual: 'mobile',
+            icon: <Smartphone size={48} />,
+            color: 'from-purple-500 to-pink-500'
         },
         {
             title: 'Random Password',
@@ -179,7 +258,7 @@ const Projects = () => {
 
                             <div className="transform transition-transform duration-500 group-hover:scale-105 group-hover:-translate-y-2">
                                 {project.visual === 'mobile' ? (
-                                    <PhoneMockup />
+                                    project.title === 'StreaQ' ? <StreaQPhoneMockup /> : <PhoneMockup />
                                 ) : (
                                     <BrowserMockup className="w-64 h-48">
                                         <div className={`text-white/20 group-hover:text-white/80 transition-colors duration-500`}>
