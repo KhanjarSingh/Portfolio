@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import SectionHeader from '../ui/SectionHeader';
-import { medals } from '../../data/portfolio';
+import { ArrowUpRight, GitMerge, Github, Star } from 'lucide-react';
+import { medals, openSource } from '../../data/portfolio';
 import { emit } from '../../lib/scroll';
 
 const METAL = {
@@ -63,6 +64,67 @@ const Medal = ({ medal, index }) => {
     );
 };
 
+// Real merged pull requests in other people's projects, each card links to the PR.
+const OpenSource = () => (
+    <div className="mt-24 md:mt-32">
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div>
+                <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-aqua">Open source</p>
+                <h3 className="mt-2 font-display text-3xl font-bold text-white md:text-4xl">Code merged into projects other people depend on.</h3>
+            </div>
+            <div className="flex gap-6 md:gap-10">
+                {openSource.stats.map((st) => (
+                    <div key={st.label}>
+                        <p className="font-display text-3xl font-extrabold text-white">{st.value}</p>
+                        <p className="text-xs text-white/50">{st.label}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {openSource.prs.map((pr, i) => (
+                <motion.a
+                    key={pr.repo}
+                    href={pr.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-cursor="PR"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.07, duration: 0.5 }}
+                    whileHover={{ y: -4 }}
+                    className="glass group flex flex-col rounded-3xl p-5"
+                >
+                    <div className="flex items-center justify-between">
+                        <span className="flex items-center gap-2 text-sm font-semibold text-white">
+                            <Github size={16} className="text-white/70" /> {pr.name}
+                        </span>
+                        <span className="flex items-center gap-1 text-xs text-white/55">
+                            <Star size={12} className="fill-sun text-sun" /> {pr.stars}
+                        </span>
+                    </div>
+                    <p className="mt-1 font-mono text-[10px] text-white/35">{pr.repo}</p>
+                    <p className="mt-4 flex-1 text-sm leading-relaxed text-white/75">{pr.what}</p>
+                    <div className="mt-5 flex items-center justify-between">
+                        <span className="flex items-center gap-1.5 rounded-full bg-[#8957e5]/20 px-2.5 py-1 text-[11px] font-semibold text-[#c4a7ff]">
+                            <GitMerge size={12} /> Merged
+                        </span>
+                        <span className="flex items-center gap-1 text-xs text-white/50 transition-colors group-hover:text-aqua">
+                            View PR <ArrowUpRight size={13} />
+                        </span>
+                    </div>
+                </motion.a>
+            ))}
+        </div>
+
+        <a href={openSource.all} target="_blank" rel="noreferrer" className="mt-5 inline-flex items-center gap-1.5 text-sm text-white/55 hover:text-aqua">
+            See all {openSource.stats[0].value} merged pull requests on GitHub <ArrowUpRight size={14} />
+        </a>
+    </div>
+);
+
 const Medals = () => (
     <section id="medals" className="relative mx-auto max-w-7xl px-5 py-28 md:px-10 md:py-40">
         <SectionHeader id="medals" title="Achievements." kicker="Hackathons, coding challenges, open source and certifications." />
@@ -75,6 +137,7 @@ const Medals = () => (
                 ))}
             </div>
         </div>
+        <OpenSource />
     </section>
 );
 
