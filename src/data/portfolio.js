@@ -141,7 +141,7 @@ export const experience = [
         headline: ['Built their ', 'entire online business', ', solo.'],
         metrics: [
             { value: '5 mo', label: 'from idea to a live store' },
-            { value: '64', label: 'customers in the loyalty club' },
+            { value: '160+', label: 'customers on the store' },
             { value: '79', label: 'pages across store and admin' },
         ],
         points: [
