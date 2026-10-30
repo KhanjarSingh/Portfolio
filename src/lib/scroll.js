@@ -7,7 +7,9 @@ let lenis = null;
 
 export function initSmoothScroll() {
     if (lenis || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return () => {};
-    lenis = new Lenis({ lerp: 0.09, smoothWheel: true });
+    // allowNestedScroll: an inner scroll area (the chat, Spotlight results) only takes the wheel
+    // when it can actually scroll that way; otherwise the page keeps scrolling smoothly.
+    lenis = new Lenis({ lerp: 0.09, smoothWheel: true, allowNestedScroll: true });
     let raf;
     const loop = (t) => {
         lenis.raf(t);
