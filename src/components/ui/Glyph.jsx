@@ -2,7 +2,7 @@ import {
     BadgePercent, BarChart3, Bug, Clapperboard, Code2, Database, FileSpreadsheet, Gamepad2, Gauge, Gift, IdCard, KeyRound,
     LayoutDashboard, LayoutGrid, Lock, Mail, Medal, MessageCircle, Megaphone, MousePointerClick, Newspaper, PackageCheck,
     Palette, Receipt, RefreshCcw, Rocket, ShieldCheck, ShoppingBag, Smartphone, Sparkles, Store, Timer, Truck, Undo2,
-    Users, Waves, Workflow, Zap, Tv, Volleyball,
+    Users, Waves, Workflow, Zap, Tv, Volleyball, GitPullRequest, BookOpen,
 } from 'lucide-react';
 
 // Icons are referenced by name from data files so content stays plain JSON-like.
@@ -10,7 +10,7 @@ const ICONS = {
     BadgePercent, BarChart3, Bug, Clapperboard, Code2, Database, FileSpreadsheet, Gamepad2, Gauge, Gift, IdCard, KeyRound,
     LayoutDashboard, LayoutGrid, Lock, Mail, Medal, MessageCircle, Megaphone, MousePointerClick, Newspaper, PackageCheck,
     Palette, Receipt, RefreshCcw, Rocket, ShieldCheck, ShoppingBag, Smartphone, Sparkles, Store, Timer, Truck, Undo2,
-    Users, Waves, Workflow, Zap, Tv, Volleyball,
+    Users, Waves, Workflow, Zap, Tv, Volleyball, GitPullRequest, BookOpen,
 };
 
 const SIZES = {
