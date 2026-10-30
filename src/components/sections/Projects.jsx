@@ -1,23 +1,13 @@
-import { memo, useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { ArrowUpRight, Github, Lock } from 'lucide-react';
 import SectionHeader from '../ui/SectionHeader';
 import IPhone from '../projects/IPhone';
+import { useIsDesktop } from '../../lib/media';
 import { moreProjects, projects as allProjects } from '../../data/portfolio';
 
 const projects = allProjects.filter((p) => p.featured);
 const others = [...allProjects.filter((p) => !p.featured), ...moreProjects];
-
-const LG = '(min-width: 1024px)';
-const useIsDesktop = () =>
-    useSyncExternalStore(
-        (cb) => {
-            const mq = window.matchMedia(LG);
-            mq.addEventListener('change', cb);
-            return () => mq.removeEventListener('change', cb);
-        },
-        () => window.matchMedia(LG).matches,
-    );
 
 // Tilts the phone toward the cursor and keeps it gently floating.
 const TiltPhone = ({ children }) => {
