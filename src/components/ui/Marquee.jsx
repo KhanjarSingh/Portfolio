@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { LITE } from '../../lib/media';
 import { motion, useAnimationFrame, useInView, useMotionValue, useScroll, useSpring, useTransform, useVelocity } from 'framer-motion';
 
 const wrap = (min, max, v) => {
@@ -7,7 +8,7 @@ const wrap = (min, max, v) => {
 };
 
 // One strip of tape whose speed and skew follow how fast you scroll.
-const Strip = ({ items, speed = 3, tone = 'sakura', rotate = -3 }) => {
+const MotionStrip = ({ items, speed = 3, tone = 'sakura', rotate = -3 }) => {
     const base = useMotionValue(0);
     const box = useRef(null);
     const visible = useInView(box, { margin: '100px' });
@@ -54,13 +55,42 @@ const Strip = ({ items, speed = 3, tone = 'sakura', rotate = -3 }) => {
     );
 };
 
+const TONES = { sakura: 'bg-sakura text-white', aqua: 'bg-aqua text-[#03141c]' };
+
+// Phones: the same tape driven by a plain CSS animation, no per-frame JavaScript.
+const CssStrip = ({ items, speed = 3, tone = 'sakura', rotate = -3 }) => {
+    const box = useRef(null);
+    const visible = useInView(box);
+    return (
+    <div ref={box} className={`relative w-[110%] -translate-x-[5%] overflow-hidden py-2.5 ${TONES[tone]}`} style={{ rotate: `${rotate}deg` }}>
+        <div
+            className="flex w-max whitespace-nowrap"
+            style={{
+                animation: `wave-drift ${items.length * 6}s linear infinite`,
+                animationDirection: speed > 0 ? 'normal' : 'reverse',
+                animationPlayState: visible ? 'running' : 'paused',
+            }}
+        >
+            {[...items, ...items, ...items, ...items].map((t, i) => (
+                <span key={i} className="flex items-center gap-5 pr-5 font-display text-2xl font-extrabold uppercase tracking-tight">
+                    <span className={i % 2 ? 'text-outline-dark' : ''}>{t}</span>
+                    <span className="text-lg">✦</span>
+                </span>
+            ))}
+        </div>
+    </div>
+    );
+};
+
+const Strip = LITE ? CssStrip : MotionStrip;
+
 // Two crossing tapes, like a manga panel break.
 const Marquee = ({ top, bottom }) => (
-    <div aria-hidden className="pointer-events-none relative z-10 flex h-48 flex-col justify-center overflow-hidden md:h-64">
+    <div aria-hidden className="pointer-events-none relative z-10 flex h-32 flex-col justify-center overflow-hidden md:h-64">
         <div className="absolute inset-x-0 top-1/2 -translate-y-1/2">
             <Strip items={top} speed={2.5} tone="sakura" rotate={-4} />
         </div>
-        {bottom && (
+        {bottom && !LITE && (
             <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 opacity-90">
                 <Strip items={bottom} speed={-2} tone="aqua" rotate={3} />
             </div>
