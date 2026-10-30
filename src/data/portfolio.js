@@ -337,6 +337,12 @@ export const projects = [
 // Smaller builds, shown only when a visitor asks for more.
 export const moreProjects = [
     {
+        title: 'StreaQ',
+        tagline: 'Keeps your coding streaks alive: daily reminders for GitHub commits, LeetCode and Codeforces.',
+        tech: ['React', 'JavaScript'],
+        links: { repo: 'https://github.com/KhanjarSingh/StreaQ' },
+    },
+    {
         title: 'MindNest',
         tagline: 'An incubation hub for student startups: pitch ideas, build teams, find mentors.',
         tech: ['React', 'Node.js', 'MongoDB'],
