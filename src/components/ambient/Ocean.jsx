@@ -1,4 +1,5 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { LITE } from '../../lib/media';
 
 const rand = (min, max) => min + Math.random() * (max - min);
 
@@ -33,7 +34,7 @@ const Layer = ({ color, range, progress }) => {
 };
 
 // Fixed backdrop that gets darker the deeper you scroll.
-const Ocean = () => {
+const OceanLayers = () => {
     const { scrollYProgress } = useScroll();
     const raysOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
     const glowOpacity = useTransform(scrollYProgress, [0.45, 0.9], [0, 1]);
@@ -99,5 +100,9 @@ const Ocean = () => {
         </div>
     );
 };
+
+// Phones: the dive gradient is painted on <main> instead (see html.lite in index.css),
+// so it scrolls with the page at zero per-frame cost.
+const Ocean = LITE ? () => null : OceanLayers;
 
 export default Ocean;
