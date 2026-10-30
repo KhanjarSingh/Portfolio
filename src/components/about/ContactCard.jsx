@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { animate, motion, useInView } from 'framer-motion';
-import { FileDown, Github, Linkedin, Mail } from 'lucide-react';
-import Glyph from '../ui/Glyph';
+import { ArrowRight, FileDown, Github, Linkedin, Mail } from 'lucide-react';
 import { profile, status } from '../../data/portfolio';
+import { scrollToId } from '../../lib/scroll';
 
 const ease = [0.2, 0.8, 0.2, 1];
 
@@ -47,12 +47,12 @@ const ContactCard = () => {
             ref={ref}
             initial="hidden"
             animate={show}
-            className="mx-auto w-full max-w-[420px] overflow-hidden lg:mr-0 rounded-[34px] border border-white/10 bg-[#0b1620] shadow-[0_40px_100px_-40px_rgba(0,0,0,.9)]"
+            className="mx-auto flex w-full max-w-[420px] flex-col overflow-hidden lg:mr-0 rounded-[34px] border border-white/10 bg-[#0b1620] shadow-[0_40px_100px_-40px_rgba(0,0,0,.9)]"
         >
             {/* Contact Poster: the water rises into the frame, then the name */}
             <motion.div
                 variants={{ hidden: { clipPath: 'inset(100% 0 0 0)' }, show: { clipPath: 'inset(0% 0 0 0)', transition: { duration: 0.9, ease } } }}
-                className="relative h-64 overflow-hidden"
+                className="relative h-52 overflow-hidden"
                 style={{ background: 'linear-gradient(180deg, #4fd1c5 0%, #0e7490 45%, #0b3a52 100%)' }}
             >
                 {/* slow caustic light */}
@@ -80,7 +80,7 @@ const ContactCard = () => {
                         {[profile.first, profile.last].map((w, i) => (
                             <span key={w} className="block overflow-hidden">
                                 <motion.span
-                                    className={`block ${i ? 'text-[2.6rem] text-white/85' : 'text-[4.2rem]'}`}
+                                    className={`block ${i ? 'text-[2.2rem] text-white/85' : 'text-[3.6rem]'}`}
                                     variants={{ hidden: { y: '105%' }, show: { y: 0, transition: { delay: 0.45 + i * 0.1, duration: 0.8, ease } } }}
                                 >
                                     {w}
@@ -91,7 +91,7 @@ const ContactCard = () => {
                 </div>
             </motion.div>
 
-            <div className="px-5 pb-6">
+            <div className="flex flex-1 flex-col px-5 pb-5">
                 {/* iOS contact action buttons */}
                 <div className="grid grid-cols-4 gap-2">
                     {ACTIONS.map(({ label, Icon, href }, i) => (
@@ -140,21 +140,26 @@ const ContactCard = () => {
                     ))}
                 </ul>
 
-                {/* interests */}
+                {/* footer pinned to the bottom edge, so the card ends level with the text column */}
                 <motion.div
-                    variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { delay: 1.35, duration: 0.5 } } }}
-                    className="mt-4"
+                    variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { delay: 1.3, duration: 0.5 } } }}
+                    className="mt-auto flex items-center justify-between gap-3 pt-4"
                 >
-                    <p className="px-1 text-[11px] font-semibold uppercase tracking-wider text-white/35">Off the clock</p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                        {status.interests.map((it, i) => (
-                            <span key={it.title} className="flex items-center gap-2 rounded-full bg-white/[0.05] py-1 pl-1 pr-3 ring-1 ring-white/10">
-                                <Glyph name={it.icon} color={['#5eead4', '#ff5c8a', '#ffd166', '#a78bfa'][i % 4]} size="sm" />
-                                <span className="text-xs font-medium text-white/85">{it.title}</span>
-                            </span>
-                        ))}
-                    </div>
+                    <span className="flex items-center gap-2 text-[13px] text-white/70">
+                        <span className="relative flex h-2.5 w-2.5">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/60" />
+                            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                        </span>
+                        Open to internships &amp; freelance
+                    </span>
+                    <button
+                        onClick={() => scrollToId('contact')}
+                        className="group flex items-center gap-1.5 rounded-full bg-aqua px-4 py-2 text-[13px] font-semibold text-[#04121c] transition-transform hover:scale-105"
+                    >
+                        Say hi <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+                    </button>
                 </motion.div>
+
             </div>
         </motion.div>
     );
