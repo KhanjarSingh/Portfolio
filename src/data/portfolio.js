@@ -51,11 +51,14 @@ export const status = {
         { value: 500, suffix: '+', label: 'athletes served' },
         { value: 2, prefix: '#', label: 'of 500+ teams' },
     ],
+    // coding first: it's what I do off the clock too
     interests: [
+        { icon: 'Code2', title: 'Competitive coding' },
+        { icon: 'GitPullRequest', title: 'Open source' },
+        { icon: 'BookOpen', title: 'AI research papers' },
         { icon: 'Waves', title: 'Swimming' },
         { icon: 'Tv', title: 'Anime' },
         { icon: 'Volleyball', title: 'Volleyball' },
-        { icon: 'Code2', title: 'Competitive coding' },
     ],
     titles: [
         'Google Big Code · Round 2',

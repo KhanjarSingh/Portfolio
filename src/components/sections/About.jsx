@@ -65,7 +65,7 @@ const About = () => {
                         <div className="flex flex-wrap gap-2">
                             {status.interests.map((it, i) => (
                                 <span key={it.title} className="flex items-center gap-2 rounded-full bg-white/[0.05] py-1 pl-1 pr-3.5 ring-1 ring-white/10">
-                                    <Glyph name={it.icon} color={['#5eead4', '#ff5c8a', '#ffd166', '#a78bfa'][i % 4]} size="sm" />
+                                    <Glyph name={it.icon} color={['#a78bfa', '#34d399', '#38bdf8', '#5eead4', '#ff5c8a', '#ffd166'][i % 6]} size="sm" />
                                     <span className="text-sm font-medium text-white/85">{it.title}</span>
                                 </span>
                             ))}
