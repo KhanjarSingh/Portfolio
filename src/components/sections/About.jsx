@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import SectionHeader from '../ui/SectionHeader';
 import ScrollText from '../ui/ScrollText';
-import DevPass from '../about/DevPass';
+import ContactCard from '../about/ContactCard';
 import { status } from '../../data/portfolio';
 
 const About = () => {
@@ -61,7 +61,7 @@ const About = () => {
                     </div>
                 </div>
 
-                <DevPass />
+                <ContactCard />
             </div>
 
             <AnimatePresence>
