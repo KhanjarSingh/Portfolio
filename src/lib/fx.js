@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
+import { LITE } from './media';
 
 // Feeds the pointer position into any hovered `.glass` card as --mx/--my,
 // which the CSS turns into a soft light that follows the cursor.
 export function useGlassSpotlight() {
     useEffect(() => {
+        if (LITE) return;
         let current = null;
         let queued = null;
         let raf = 0;
