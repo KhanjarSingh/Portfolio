@@ -158,7 +158,7 @@ export const experience = [
             { icon: 'BadgePercent', title: 'Coupons' },
             { icon: 'Newspaper', title: 'Blog' },
         ],
-        stack: ['Next.js', 'Node.js', 'TypeScript', 'PostgreSQL', 'Razorpay'],
+        stack: ['Next.js', 'Node.js', 'TypeScript', 'PostgreSQL', 'Redis', 'Razorpay'],
     },
     {
         company: 'Ionage',
