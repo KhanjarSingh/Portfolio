@@ -12,7 +12,7 @@ export const profile = {
     first: 'Parth',
     last: 'Tandalwade',
     katakana: 'パース・タンダルワデ',
-    roles: ['Full-Stack Developer', 'Mobile App Engineer', 'Competitive Programmer', 'Competitive Swimmer'],
+    roles: ['Developer', 'Mobile App Builder', 'Competitive Programmer', 'Competitive Swimmer'],
     location: 'Pune, India',
     email: 'parth.k@adypu.edu.in',
     resume: '/Parth_Tandalwade_Resume.pdf',
@@ -39,25 +39,30 @@ export const sections = [
 
 export const MAX_DEPTH = 120;
 
+// The About section's Developer Pass (front + back) and passive skills.
 export const status = {
-    className: 'Full-Stack Developer',
-    subclass: 'Mobile · AI/ML',
-    guild: 'Newton School of Technology (ADYPU)',
-    degree: 'B.Tech CSE — AIML',
-    years: '2024 → 2028',
+    title: 'Developer',
+    focus: 'Web · Mobile · AI',
+    now: 'Freelancing at ZewaFeeds',
+    degree: 'B.Tech CSE · AIML',
+    college: 'Newton School of Technology',
+    classOf: '2028',
     stats: [
-        { key: 'API ENDPOINTS BUILT', value: 220, max: 250, suffix: '+' },
-        { key: 'USERS SERVED', value: 10000, max: 10000, suffix: '+' },
-        { key: 'ATHLETES ON MY APP', value: 500, max: 600, suffix: '+' },
-        { key: 'TEAMS OUTRANKED', value: 498, max: 500, suffix: '' },
+        { value: 10000, suffix: '+', label: 'people reached' },
+        { value: 500, suffix: '+', label: 'athletes served' },
+        { value: 2, prefix: '#', label: 'of 500+ teams' },
+    ],
+    interests: [
+        { icon: 'Waves', title: 'Swimming' },
+        { icon: 'Tv', title: 'Anime' },
+        { icon: 'Volleyball', title: 'Volleyball' },
+        { icon: 'Code2', title: 'Competitive coding' },
     ],
     titles: [
+        'Google Big Code · Round 2',
         'Runner-Up · Project Morpheus',
         'Hacktoberfest ×2',
-        'Google Big Code · Round 2',
         'SIH National Stage',
-        'Volleyball Squad',
-        'Swimmer',
     ],
     passives: [
         { name: 'Deadline Breaker', desc: 'Shipped 3 major features 3 weeks early.' },
@@ -65,6 +70,7 @@ export const status = {
         { name: 'Underwater Focus', desc: 'Long laps, longer debugging sessions.' },
     ],
 };
+
 
 const icon = (si, name) => ({ name, path: si.path, color: `#${si.hex}` });
 const mono = (name, label, color) => ({ name, label, color });
