@@ -4,7 +4,7 @@ import {
     siReact, siNodedotjs, siExpress, siNextdotjs, siTailwindcss, siExpo,
     siMongodb, siPostgresql, siFirebase, siPrisma, siGit, siPostman, siSupabase, siFigma, siGithubactions,
     siNumpy, siPandas, siFastapi, siGooglegemini, siGo, siJest, siReactquery, siMui,
-    siHuggingface, siMeta, siStreamlit, siClaude, siJupyter,
+    siHuggingface, siMeta, siStreamlit, siJupyter,
 } from 'simple-icons';
 
 export const profile = {
@@ -96,7 +96,7 @@ export const skillFolders = [
     {
         name: 'AI & LLMs',
         apps: [
-            icon(siGooglegemini, 'Gemini'), mono('OpenAI', 'AI', '#10A37F'), icon(siClaude, 'Claude'),
+            icon(siGooglegemini, 'Gemini'), mono('OpenAI', 'AI', '#10A37F'),
             icon(siMeta, 'Llama 3'), mono('Groq', 'GQ', '#F55036'), icon(siHuggingface, 'Hugging Face'),
             mono('FAISS', 'FS', '#4F8DF7'), mono('Sentence-Transformers', 'ST', '#FFD21E'), mono('RAG', 'RAG', '#C084FC'),
             mono('Embeddings', 'EMB', '#5EEAD4'), mono('Prompt Eng.', 'PE', '#FB7185'), icon(siFastapi, 'FastAPI'),
