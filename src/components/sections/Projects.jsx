@@ -207,7 +207,7 @@ const Projects = () => {
 
     return (
         <section id="projects" className="relative mx-auto max-w-7xl px-5 py-28 md:px-10 md:py-40">
-            <SectionHeader id="projects" title="Shipped." kicker="My four favourites. Scroll and the phone switches apps; the screens are live, so tap around." />
+            <SectionHeader id="projects" title="Projects." kicker="My four favourites. Scroll and the phone switches apps; the screens are live, so tap around." />
 
             <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:gap-24">
                 <div>

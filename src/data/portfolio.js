@@ -12,7 +12,7 @@ export const profile = {
     first: 'Parth',
     last: 'Tandalwade',
     katakana: 'パース・タンダルワデ',
-    roles: ['Full-Stack Developer', 'Mobile App Engineer', 'Competitive Programmer', 'Lane-4 Swimmer'],
+    roles: ['Full-Stack Developer', 'Mobile App Engineer', 'Competitive Programmer', 'Competitive Swimmer'],
     location: 'Pune, India',
     email: 'parth.k@adypu.edu.in',
     resume: '/Parth_Tandalwade_Resume.pdf',
@@ -28,12 +28,12 @@ export const profile = {
 
 // Section ids double as dive checkpoints; depth is in metres.
 export const sections = [
-    { id: 'surface', label: 'Surface', jp: '水面', depth: 0 },
-    { id: 'about', label: 'Status', jp: 'ステータス', depth: 18 },
+    { id: 'surface', label: 'Home', jp: '水面', depth: 0 },
+    { id: 'about', label: 'About', jp: 'ステータス', depth: 18 },
     { id: 'skills', label: 'Skills', jp: 'スキル', depth: 40 },
-    { id: 'experience', label: 'Laps', jp: 'キャリア', depth: 62 },
+    { id: 'experience', label: 'Experience', jp: 'キャリア', depth: 62 },
     { id: 'projects', label: 'Projects', jp: 'プロジェクト', depth: 85 },
-    { id: 'medals', label: 'Medals', jp: 'メダル', depth: 104 },
+    { id: 'medals', label: 'Achievements', jp: 'メダル', depth: 104 },
     { id: 'contact', label: 'Contact', jp: 'コンタクト', depth: 120 },
 ];
 
@@ -57,7 +57,7 @@ export const status = {
         'Google Big Code · Round 2',
         'SIH National Stage',
         'Volleyball Squad',
-        'Lane Swimmer',
+        'Swimmer',
     ],
     passives: [
         { name: 'Deadline Breaker', desc: 'Shipped 3 major features 3 weeks early.' },

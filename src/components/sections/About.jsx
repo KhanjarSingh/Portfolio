@@ -102,10 +102,10 @@ const StatusWindow = () => {
                     <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 font-mono text-sm">
                         {[
                             ['NAME', profile.name],
-                            ['CLASS', status.className],
-                            ['SUB', status.subclass],
-                            ['GUILD', status.guild],
-                            ['QUEST', `${status.degree} · ${status.years}`],
+                            ['ROLE', status.className],
+                            ['FOCUS', status.subclass],
+                            ['COLLEGE', status.guild],
+                            ['DEGREE', `${status.degree} · ${status.years}`],
                         ].map(([k, v]) => (
                             <div key={k} className="contents">
                                 <dt className="text-cyan/60">{k}</dt>
@@ -171,7 +171,7 @@ const About = () => {
 
     return (
         <section id="about" className="relative mx-auto max-w-7xl px-5 py-28 md:px-10 md:py-40">
-            <SectionHeader id="about" title="Player profile." kicker="Developer by day, swimmer by dawn, anime watcher by night." />
+            <SectionHeader id="about" title="About me." kicker="Developer by day, swimmer by dawn, anime watcher by night." />
 
             <div className="grid items-start gap-14 lg:grid-cols-[1fr_1.05fr]">
                 <div className="space-y-6 text-lg leading-relaxed text-white md:text-xl">

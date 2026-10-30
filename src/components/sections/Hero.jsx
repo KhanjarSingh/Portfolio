@@ -95,9 +95,7 @@ const Hero = () => {
                     transition={{ delay: 0.2 }}
                     className="mb-6 flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-white/70"
                 >
-                    <span className="rounded-full bg-sakura px-2.5 py-1 font-bold text-white">Lane 04</span>
-                    <span>Heat 01</span>
-                    <span className="text-white/30">/</span>
+                    <span className="rounded-full bg-sakura px-2.5 py-1 font-bold text-white">Full-Stack Developer</span>
                     <span>{profile.location}</span>
                 </motion.div>
 
