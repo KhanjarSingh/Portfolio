@@ -362,6 +362,46 @@ export const moreProjects = [
     },
 ];
 
+// Merged pull requests in other people's projects (verified on GitHub).
+export const openSource = {
+    stats: [
+        { value: '19', label: 'merged pull requests' },
+        { value: '15', label: 'open-source repos' },
+        { value: '70k+', label: 'stars across the top projects' },
+    ],
+    prs: [
+        {
+            repo: 'drawdb-io/drawdb',
+            name: 'drawDB',
+            stars: '40.2k',
+            what: 'Completed the missing German translations for the database diagram editor.',
+            url: 'https://github.com/drawdb-io/drawdb/pull/797',
+        },
+        {
+            repo: 'Automattic/mongoose',
+            name: 'Mongoose',
+            stars: '27.5k',
+            what: 'Fixed deep-equality checks for Set objects in MongoDB’s most-used Node.js library.',
+            url: 'https://github.com/Automattic/mongoose/pull/16190',
+        },
+        {
+            repo: 'CollaboraOnline/online',
+            name: 'Collabora Online',
+            stars: '3.4k',
+            what: 'Refactored device detection across 55 files of the online office suite.',
+            url: 'https://github.com/CollaboraOnline/online/pull/15190',
+        },
+        {
+            repo: 'graycoreio/daffodil',
+            name: 'Daffodil',
+            stars: '465',
+            what: 'Replaced deprecated design-module imports in the e-commerce framework’s header.',
+            url: 'https://github.com/graycoreio/daffodil/pull/4087',
+        },
+    ],
+    all: 'https://github.com/pulls?q=is%3Apr+author%3AKhanjarSingh+is%3Amerged+-user%3AKhanjarSingh',
+};
+
 export const medals = [
     {
         tier: 'gold',
