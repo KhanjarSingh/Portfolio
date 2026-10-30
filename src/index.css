@@ -166,6 +166,12 @@ body {
   animation: wave-drift linear infinite;
 }
 
+/* Experience lane auto-advance bar */
+@keyframes lap-timer {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
 /* Click ripple rings */
 @keyframes ripple-ring {
   from { transform: translate(-50%, -50%) scale(0); opacity: 0.9; }
