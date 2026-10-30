@@ -127,7 +127,7 @@ const Skills = () => {
 
     return (
         <section id="skills" className="relative mx-auto max-w-7xl px-5 py-28 md:px-10 md:py-40">
-            <SectionHeader id="skills" title="Home screen." kicker="My stack, arranged the way I'd arrange my phone. Tap a folder. Long-press energy: hit Edit and drag things around." />
+            <SectionHeader id="skills" title="Skills." kicker="My stack, laid out like a phone home screen. Tap a folder to see what's inside." />
 
             <div className="grid items-center gap-12 lg:grid-cols-[1.25fr_1fr]">
                 {/* The home screen */}

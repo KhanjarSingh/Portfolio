@@ -231,7 +231,7 @@ const Contact = () => {
 
     return (
         <section id="contact" className="relative mx-auto max-w-7xl px-5 py-28 md:px-10 md:py-40">
-            <SectionHeader id="contact" title="Say hi." kicker="Send me a message right here. It actually reaches my inbox." />
+            <SectionHeader id="contact" title="Get in touch." kicker="Send me a message right here. It actually reaches my inbox." />
 
             <div className="grid items-start gap-10 lg:grid-cols-[1.3fr_1fr]">
                 {/* macOS window */}

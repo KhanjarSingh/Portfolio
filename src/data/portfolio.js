@@ -12,7 +12,7 @@ export const profile = {
     first: 'Parth',
     last: 'Tandalwade',
     katakana: 'パース・タンダルワデ',
-    roles: ['Full-Stack Developer', 'Mobile App Engineer', 'Competitive Programmer', 'Lane-4 Swimmer'],
+    roles: ['Developer', 'Mobile App Builder', 'Competitive Programmer', 'Competitive Swimmer'],
     location: 'Pune, India',
     email: 'parth.k@adypu.edu.in',
     resume: '/Parth_Tandalwade_Resume.pdf',
@@ -28,36 +28,41 @@ export const profile = {
 
 // Section ids double as dive checkpoints; depth is in metres.
 export const sections = [
-    { id: 'surface', label: 'Surface', jp: '水面', depth: 0 },
-    { id: 'about', label: 'Status', jp: 'ステータス', depth: 18 },
+    { id: 'surface', label: 'Home', jp: '水面', depth: 0 },
+    { id: 'about', label: 'About', jp: 'ステータス', depth: 18 },
     { id: 'skills', label: 'Skills', jp: 'スキル', depth: 40 },
-    { id: 'experience', label: 'Laps', jp: 'キャリア', depth: 62 },
+    { id: 'experience', label: 'Experience', jp: 'キャリア', depth: 62 },
     { id: 'projects', label: 'Projects', jp: 'プロジェクト', depth: 85 },
-    { id: 'medals', label: 'Medals', jp: 'メダル', depth: 104 },
+    { id: 'medals', label: 'Achievements', jp: 'メダル', depth: 104 },
     { id: 'contact', label: 'Contact', jp: 'コンタクト', depth: 120 },
 ];
 
 export const MAX_DEPTH = 120;
 
+// The About section's Developer Pass (front + back) and passive skills.
 export const status = {
-    className: 'Full-Stack Developer',
-    subclass: 'Mobile · AI/ML',
-    guild: 'Newton School of Technology (ADYPU)',
-    degree: 'B.Tech CSE — AIML',
-    years: '2024 → 2028',
+    title: 'Developer',
+    focus: 'Web · Mobile · AI',
+    now: 'Freelancing at ZewaFeeds',
+    degree: 'B.Tech CSE · AIML',
+    college: 'Newton School of Technology',
+    classOf: '2028',
     stats: [
-        { key: 'API ENDPOINTS BUILT', value: 220, max: 250, suffix: '+' },
-        { key: 'USERS SERVED', value: 10000, max: 10000, suffix: '+' },
-        { key: 'ATHLETES ON MY APP', value: 500, max: 600, suffix: '+' },
-        { key: 'TEAMS OUTRANKED', value: 498, max: 500, suffix: '' },
+        { value: 10000, suffix: '+', label: 'people reached' },
+        { value: 500, suffix: '+', label: 'athletes served' },
+        { value: 2, prefix: '#', label: 'of 500+ teams' },
+    ],
+    interests: [
+        { icon: 'Waves', title: 'Swimming' },
+        { icon: 'Tv', title: 'Anime' },
+        { icon: 'Volleyball', title: 'Volleyball' },
+        { icon: 'Code2', title: 'Competitive coding' },
     ],
     titles: [
+        'Google Big Code · Round 2',
         'Runner-Up · Project Morpheus',
         'Hacktoberfest ×2',
-        'Google Big Code · Round 2',
         'SIH National Stage',
-        'Volleyball Squad',
-        'Lane Swimmer',
     ],
     passives: [
         { name: 'Deadline Breaker', desc: 'Shipped 3 major features 3 weeks early.' },
@@ -65,6 +70,7 @@ export const status = {
         { name: 'Underwater Focus', desc: 'Long laps, longer debugging sessions.' },
     ],
 };
+
 
 const icon = (si, name) => ({ name, path: si.path, color: `#${si.hex}` });
 const mono = (name, label, color) => ({ name, label, color });
@@ -336,6 +342,12 @@ export const projects = [
 
 // Smaller builds, shown only when a visitor asks for more.
 export const moreProjects = [
+    {
+        title: 'StreaQ',
+        tagline: 'Keeps your coding streaks alive: daily reminders for GitHub commits, LeetCode and Codeforces.',
+        tech: ['React', 'JavaScript'],
+        links: { repo: 'https://github.com/KhanjarSingh/StreaQ' },
+    },
     {
         title: 'MindNest',
         tagline: 'An incubation hub for student startups: pitch ideas, build teams, find mentors.',

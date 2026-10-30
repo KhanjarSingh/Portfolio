@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { LITE } from '../../lib/media';
 
 const DAMPING = 0.982;
 
@@ -18,7 +19,7 @@ const WaterCanvas = ({ className = '' }) => {
         const resize = () => {
             const r = canvas.getBoundingClientRect();
             // coarser grid on big screens; smoothing on upscale hides it
-            CELL = r.width > 1100 ? 6 : r.width > 700 ? 5 : 4;
+            CELL = r.width > 1100 ? 6 : r.width > 700 ? 5 : LITE ? 6 : 4;
             canvas.width = r.width;
             canvas.height = r.height;
             W = Math.max(2, Math.ceil(r.width / CELL));
@@ -79,9 +80,11 @@ const WaterCanvas = ({ className = '' }) => {
             ctx.drawImage(off, 0, 0, canvas.width, canvas.height);
         };
 
+        let frame = 0;
         const loop = (t) => {
             raf = requestAnimationFrame(loop);
             if (!visible) return;
+            if (LITE && frame++ % 2) return; // phones: simulate at 30fps
             if (t - lastDrop > 700) {
                 lastDrop = t;
                 disturb(Math.random() * canvas.width, Math.random() * canvas.height, 2, 60);

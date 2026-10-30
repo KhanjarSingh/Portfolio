@@ -4,6 +4,7 @@ import { Command, FileDown } from 'lucide-react';
 import { MAX_DEPTH, profile, sections } from '../../data/portfolio';
 import Glyph from '../ui/Glyph';
 import { emit, scrollToId, useActiveSection, useDepth } from '../../lib/scroll';
+import { LITE } from '../../lib/media';
 
 const spring = { type: 'spring', stiffness: 420, damping: 32 };
 const ICONS = { surface: 'Waves', about: 'Gamepad2', skills: 'LayoutGrid', experience: 'Timer', projects: 'Rocket', medals: 'Medal', contact: 'MessageCircle' };
@@ -98,9 +99,10 @@ const DynamicIsland = () => {
                             <>
                             <svg width="26" height="26" viewBox="0 0 26 26" className="-rotate-90">
                                 <circle cx="13" cy="13" r="10" stroke="rgba(255,255,255,.12)" strokeWidth="3" fill="none" />
+                                {/* phones: progress by section, so it only repaints when the section changes */}
                                 <motion.circle
                                     cx="13" cy="13" r="10" stroke="#5eead4" strokeWidth="3" fill="none" strokeLinecap="round"
-                                    style={{ pathLength: ring }}
+                                    style={LITE ? { pathLength: active.depth / MAX_DEPTH } : { pathLength: ring }}
                                 />
                             </svg>
                             <AnimatePresence mode="wait">
@@ -117,7 +119,7 @@ const DynamicIsland = () => {
                                 </motion.span>
                             </AnimatePresence>
                             <span className="ml-3 h-1.5 w-1.5 animate-pulse rounded-full bg-sakura" />
-                            <motion.span className="w-12 text-right font-mono text-xs tabular-nums text-aqua">{depth}</motion.span>
+                            <motion.span className="w-12 text-right font-mono text-xs tabular-nums text-aqua">{LITE ? `−${active.depth}m` : depth}</motion.span>
                             </>
                             )}
                         </motion.button>

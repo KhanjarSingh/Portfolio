@@ -1,10 +1,11 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { sections } from '../../data/portfolio';
+import { LITE } from '../../lib/media';
 
 const ease = [0.2, 0.8, 0.2, 1];
 
-// Lane number + depth + title, with a giant katakana watermark drifting behind it.
+// Section number + depth + title, with a giant katakana watermark drifting behind it.
 const SectionHeader = ({ id, title, kicker }) => {
     const ref = useRef(null);
     const s = sections.find((x) => x.id === id);
@@ -15,20 +16,23 @@ const SectionHeader = ({ id, title, kicker }) => {
 
     return (
         <div ref={ref} className="relative mb-14 md:mb-20">
-            <motion.p
-                aria-hidden
-                style={{ x }}
-                className="pointer-events-none absolute -top-10 left-0 select-none whitespace-nowrap font-jp text-[18vw] font-black leading-none text-white/[0.04] md:-top-16 md:text-[11vw]"
-            >
-                {s.jp}
-            </motion.p>
+            {/* decorative watermark: desktop only (costly to paint on phones, barely visible there) */}
+            {!LITE && (
+                <motion.p
+                    aria-hidden
+                    style={{ x }}
+                    className="pointer-events-none absolute -top-16 left-0 select-none whitespace-nowrap font-jp text-[11vw] font-black leading-none text-white/[0.04]"
+                >
+                    {s.jp}
+                </motion.p>
+            )}
 
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: '-80px' }} className="relative">
                 <motion.div
                     variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0, transition: { duration: 0.6, ease } } }}
                     className="mb-4 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-aqua"
                 >
-                    <span className="rounded-full border border-aqua/40 px-2.5 py-1">Lane {lane}</span>
+                    <span className="rounded-full border border-aqua/40 px-2.5 py-1">{lane}</span>
                     <motion.span
                         variants={{ hidden: { scaleX: 0 }, show: { scaleX: 1, transition: { duration: 0.8, ease, delay: 0.2 } } }}
                         className="h-px w-10 origin-left bg-aqua/40"

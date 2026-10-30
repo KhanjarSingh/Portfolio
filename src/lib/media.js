@@ -12,3 +12,6 @@ export const useIsDesktop = () =>
         },
         () => window.matchMedia(LG).matches,
     );
+
+// Phones and touch devices get a lighter build: same look, no per-frame scroll effects.
+export const LITE = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px), (pointer: coarse)').matches;

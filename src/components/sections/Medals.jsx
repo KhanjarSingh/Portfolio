@@ -65,7 +65,7 @@ const Medal = ({ medal, index }) => {
 
 const Medals = () => (
     <section id="medals" className="relative mx-auto max-w-7xl px-5 py-28 md:px-10 md:py-40">
-        <SectionHeader id="medals" title="Medal case." kicker="Hackathons, coding challenges, open source and certifications. Hover to spin them, click for a bonus." />
+        <SectionHeader id="medals" title="Achievements." kicker="Hackathons, coding challenges, open source and certifications." />
         <div className="relative">
             {/* the rail the medals hang from */}
             <div className="absolute inset-x-0 top-0 hidden h-1.5 rounded-full bg-gradient-to-r from-transparent via-white/30 to-transparent lg:block" />
