@@ -12,7 +12,7 @@ const About = () => {
         <section id="about" className="relative mx-auto max-w-7xl px-5 py-28 md:px-10 md:py-40">
             <SectionHeader id="about" title="About me." kicker="Developer by day, swimmer by dawn, anime watcher by night." />
 
-            <div className="grid items-start gap-14 lg:grid-cols-[1fr_1.05fr]">
+            <div className="grid items-start gap-14 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-20">
                 <div className="space-y-6 text-lg leading-relaxed text-white md:text-xl">
                     <ScrollText
                         segments={[
@@ -61,7 +61,10 @@ const About = () => {
                     </div>
                 </div>
 
-                <ContactCard />
+                {/* fixed-width column, right-aligned with the page edge; sticks beside the text on desktop */}
+                <div className="lg:sticky lg:top-24">
+                    <ContactCard />
+                </div>
             </div>
 
             <AnimatePresence>
