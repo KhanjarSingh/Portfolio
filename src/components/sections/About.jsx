@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import SectionHeader from '../ui/SectionHeader';
 import ScrollText from '../ui/ScrollText';
 import ContactCard from '../about/ContactCard';
+import Glyph from '../ui/Glyph';
 import { status } from '../../data/portfolio';
 
 const About = () => {
@@ -12,8 +13,8 @@ const About = () => {
         <section id="about" className="relative mx-auto max-w-7xl px-5 py-28 md:px-10 md:py-40">
             <SectionHeader id="about" title="About me." kicker="Developer by day, swimmer by dawn, anime watcher by night." />
 
-            <div className="grid items-start gap-14 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-20">
-                <div className="space-y-6 text-lg leading-relaxed text-white md:text-xl">
+            <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_400px] lg:items-stretch lg:gap-16">
+                <div className="flex flex-col gap-6 text-lg leading-relaxed text-white md:text-xl">
                     <ScrollText
                         segments={[
                             ["Hey, I'm"],
@@ -33,7 +34,8 @@ const About = () => {
                         ]}
                     />
 
-                    <div className="pt-4">
+                    {/* pinned to the bottom so it lines up with the bottom of the card */}
+                    <div className="pt-4 lg:mt-auto">
                         <p className="mb-4 font-mono text-xs uppercase tracking-[0.3em] text-aqua">Passive skills</p>
                         <div className="space-y-3">
                             {status.passives.map((p, i) => (
@@ -58,13 +60,21 @@ const About = () => {
                                 </motion.button>
                             ))}
                         </div>
+
+                        <p className="mb-3 mt-7 font-mono text-xs uppercase tracking-[0.3em] text-aqua">Off the clock</p>
+                        <div className="flex flex-wrap gap-2">
+                            {status.interests.map((it, i) => (
+                                <span key={it.title} className="flex items-center gap-2 rounded-full bg-white/[0.05] py-1 pl-1 pr-3.5 ring-1 ring-white/10">
+                                    <Glyph name={it.icon} color={['#5eead4', '#ff5c8a', '#ffd166', '#a78bfa'][i % 4]} size="sm" />
+                                    <span className="text-sm font-medium text-white/85">{it.title}</span>
+                                </span>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
-                {/* fixed-width column, right-aligned with the page edge; sticks beside the text on desktop */}
-                <div className="lg:sticky lg:top-24">
-                    <ContactCard />
-                </div>
+                {/* fixed-width column, right-aligned with the page edge */}
+                <ContactCard />
             </div>
 
             <AnimatePresence>
