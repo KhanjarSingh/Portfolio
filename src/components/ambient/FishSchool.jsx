@@ -1,12 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { useDepth } from '../../lib/scroll';
+import { LITE } from '../../lib/media';
 
 const VIEW = 70; // neighbour radius
 const MAX_SPEED = 2.2;
 
 // Bioluminescent fish that flock (boids), drift toward the cursor and scatter on click.
 // They fade in once the dive passes ~25m.
-const FishSchool = () => {
+const FishSchoolCanvas = () => {
     const ref = useRef(null);
     const depth = useDepth();
 
@@ -165,5 +166,8 @@ const FishSchool = () => {
 
     return <canvas ref={ref} aria-hidden className="pointer-events-none fixed inset-0 -z-[5] h-full w-full transition-opacity duration-700" />;
 };
+
+// Phones skip the flocking simulation entirely.
+const FishSchool = LITE ? () => null : FishSchoolCanvas;
 
 export default FishSchool;
