@@ -1,105 +1,255 @@
-import React from 'react';
-import SectionWrapper from '../ui/SectionWrapper';
-import { Sparkles, Code2, Brain, Rocket, Award } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, animate, motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import SectionHeader from '../ui/SectionHeader';
+import ScrollText from '../ui/ScrollText';
+import { profile, status } from '../../data/portfolio';
 
-const About = () => {
+const Counter = ({ value, decimals = 0, suffix = '' }) => {
+    const ref = useRef(null);
+    const inView = useInView(ref, { once: true });
+    const [n, setN] = useState(0);
+    useEffect(() => {
+        if (!inView) return;
+        const c = animate(0, value, { duration: 1.8, ease: [0.2, 0.7, 0.2, 1], onUpdate: setN });
+        return () => c.stop();
+    }, [inView, value]);
     return (
-        <SectionWrapper id="about" className="relative overflow-hidden">
-            <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full -z-10" />
+        <span ref={ref} className="tabular-nums">
+            {n.toLocaleString('en-IN', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}
+            {suffix}
+        </span>
+    );
+};
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
-                <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                    className="space-y-10"
-                >
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium">
-                        <Sparkles size={16} />
-                        <span>About Me</span>
-                    </div>
+const SYSTEM_MSGS = [
+    'A new player has entered the dungeon.',
+    '+40 XP — Feature shipped 3 weeks early.',
+    'Skill “React Native” reached Lv. MAX.',
+    'Quest complete: 24h pipeline → 30 min.',
+    'Stamina restored after 2km swim.',
+];
 
-                    <h2 className="text-5xl md:text-6xl font-bold font-heading leading-tight">
-                        Crafting <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-violet-400 to-indigo-500">digital experiences</span> that matter.
-                    </h2>
+const Typewriter = () => {
+    const [i, setI] = useState(0);
+    const [len, setLen] = useState(0);
+    const msg = SYSTEM_MSGS[i];
+    useEffect(() => {
+        const t = len < msg.length ? setTimeout(() => setLen(len + 1), 28) : setTimeout(() => {
+            setLen(0);
+            setI((i + 1) % SYSTEM_MSGS.length);
+        }, 2200);
+        return () => clearTimeout(t);
+    }, [len, msg, i]);
+    return (
+        <p className="font-mono text-xs text-cyan">
+            <span className="text-white/40">[SYSTEM]</span> {msg.slice(0, len)}
+            <span className="ml-0.5 inline-block h-3 w-1.5 animate-pulse bg-cyan align-middle" />
+        </p>
+    );
+};
 
-                    <div className="space-y-6 text-base md:text-lg leading-relaxed max-w-2xl">
-                        <p className="text-white/90">
-                            Hey! I'm Parth, A Computer Science student who turns ideas into reality through code. I love building things that people actually use, whether it's a sleek web app, a mobile experience, or something powered by AI.
-                        </p>
-                        <p className="text-white/90">
-                            My journey started with curiosity and has evolved into a passion for creating elegant solutions. I've worked on projects ranging from e-commerce platforms to AI-powered analytics tools, always focusing on clean code, great UX, and scalable architecture.
-                        </p>
-                        <p className="text-muted-foreground">
-                            When I'm not coding, you'll find me solving DSA problems (75+ and counting), exploring new frameworks, or diving deep into the latest tech trends. I'm always excited to collaborate on interesting projects and learn something new.
-                        </p>
-                    </div>
+const Corner = ({ className }) => <span className={`absolute h-4 w-4 border-cyan ${className}`} />;
 
-                    <div className="flex gap-6 pt-6">
-                        <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-500/10 to-violet-500/10 border border-white/10 flex-1 hover:border-primary/30 hover:bg-gradient-to-br hover:from-blue-500/15 hover:to-violet-500/15 transition-all duration-300 group">
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="p-3 rounded-full bg-primary/10 text-primary group-hover:scale-110 transition-transform">
-                                    <Sparkles size={24} />
-                                </div>
-                                <div className="animate-pulse flex gap-1">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-primary/50" />
-                                    <div className="w-1.5 h-1.5 rounded-full bg-primary/50 delay-75" />
-                                    <div className="w-1.5 h-1.5 rounded-full bg-primary/50 delay-150" />
-                                </div>
-                            </div>
-                            <div className="text-xl font-bold text-white mb-1">Problem Solver</div>
-                            <div className="text-sm text-muted-foreground font-medium">Turning complexity into clarity</div>
-                        </div>
-                    </div>
-                </motion.div>
+const StatusWindow = () => {
+    const ref = useRef(null);
+    const mx = useMotionValue(0.5);
+    const my = useMotionValue(0.5);
+    const rx = useSpring(useTransform(my, [0, 1], [8, -8]), { stiffness: 150, damping: 15 });
+    const ry = useSpring(useTransform(mx, [0, 1], [-10, 10]), { stiffness: 150, damping: 15 });
+    const glareX = useTransform(mx, [0, 1], ['0%', '100%']);
+    const [hovered, setHovered] = useState(null);
 
-                <div className="grid gap-6">
-                    {[
-                        { icon: <Code2 className="text-blue-400" size={28} />, title: "Full Stack Engineering", desc: "Building end-to-end web applications with modern technologies like React, Next.js, and Node.js.", bg: "bg-blue-500/10 group-hover:bg-blue-500/20" },
-                        { icon: <Brain className="text-violet-400" size={28} />, title: "AI-Powered Solutions", desc: "Integrating AI models and smart features to create intelligent, data-driven user experiences.", bg: "bg-violet-500/10 group-hover:bg-violet-500/20" },
-                        { icon: <Rocket className="text-indigo-400" size={28} />, title: "Performance & Scale", desc: "Optimizing applications for speed and scalability, ensuring smooth performance under load.", bg: "bg-indigo-500/10 group-hover:bg-indigo-500/20" }
-                    ].map((item, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="p-8 rounded-2xl bg-secondary/10 border border-white/5 backdrop-blur-sm hover:bg-secondary/20 hover:border-primary/20 transition-all hover:-translate-y-2 duration-300 group"
-                        >
-                            <div className={`w-14 h-14 rounded-xl ${item.bg} flex items-center justify-center mb-5 transition-colors`}>
-                                {item.icon}
-                            </div>
-                            <h3 className="text-2xl font-bold text-white mb-3">{item.title}</h3>
-                            <p className="text-muted-foreground text-base leading-relaxed">{item.desc}</p>
-                        </motion.div>
-                    ))}
-                </div>
-            </div>
+    const move = (e) => {
+        const r = ref.current.getBoundingClientRect();
+        mx.set((e.clientX - r.left) / r.width);
+        my.set((e.clientY - r.top) / r.height);
+    };
 
+    return (
+        <div style={{ perspective: 1200 }}>
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="mt-20 pt-10 border-t border-white/5"
+                ref={ref}
+                onPointerMove={move}
+                onPointerLeave={() => {
+                    mx.set(0.5);
+                    my.set(0.5);
+                }}
+                initial={{ opacity: 0, scale: 0.85, rotateX: 25 }}
+                whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
+                viewport={{ once: true, margin: '-100px' }}
+                transition={{ type: 'spring', stiffness: 90, damping: 16 }}
+                style={{ rotateX: rx, rotateY: ry }}
+                className="relative overflow-hidden border border-cyan/60 will-change-transform bg-[#041a2e]/85 p-6 shadow-[0_0_60px_-10px_rgba(34,211,238,.45),inset_0_0_40px_rgba(34,211,238,.08)] md:p-8"
             >
-                <p className="text-sm text-muted-foreground mb-6 uppercase tracking-wider font-semibold">Certifications & Achievements</p>
-                <div className="flex flex-wrap gap-4">
-                    <a href="https://drive.google.com/drive/folders/1CXZxouyFfHmu52N5pa47QmEtrS-dMr0J?usp=sharing" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-secondary/20 border border-white/5 text-sm text-muted-foreground hover:text-white hover:bg-secondary/40 transition-colors flex items-center gap-2">
-                        <Award size={14} /> Intern – Popular Digital AI
-                    </a>
-                    <a href="https://coursera.org/share/beee980da3ede436a47b9b69ec3d0dc0" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-secondary/20 border border-white/5 text-sm text-muted-foreground hover:text-white hover:bg-secondary/40 transition-colors flex items-center gap-2">
-                        <Award size={14} /> AI for Everyone
-                    </a>
-                    <a href="https://www.holopin.io/@khanjarsingh#" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-secondary/20 border border-white/5 text-sm text-muted-foreground hover:text-white hover:bg-secondary/40 transition-colors flex items-center gap-2">
-                        <Award size={14} /> Hacktoberfest 2024 - 2025
-                    </a>
+                <Corner className="left-2 top-2 border-l-2 border-t-2" />
+                <Corner className="right-2 top-2 border-r-2 border-t-2" />
+                <Corner className="bottom-2 left-2 border-b-2 border-l-2" />
+                <Corner className="bottom-2 right-2 border-b-2 border-r-2" />
+                <motion.div
+                    className="pointer-events-none absolute inset-y-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-cyan/10 to-transparent"
+                    style={{ left: glareX }}
+                />
+                {/* scanlines */}
+                <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent_0_3px,rgba(34,211,238,.04)_3px_4px)]" />
+
+                <div className="relative">
+                    <div className="mb-5 flex items-center gap-3">
+                        <span className="h-px flex-1 bg-gradient-to-r from-transparent to-cyan/70" />
+                        <span className="font-mono text-sm font-bold tracking-[0.5em] text-cyan">STATUS</span>
+                        <span className="h-px flex-1 bg-gradient-to-l from-transparent to-cyan/70" />
+                    </div>
+
+                    <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 font-mono text-sm">
+                        {[
+                            ['NAME', profile.name],
+                            ['CLASS', status.className],
+                            ['SUB', status.subclass],
+                            ['GUILD', status.guild],
+                            ['QUEST', `${status.degree} · ${status.years}`],
+                        ].map(([k, v]) => (
+                            <div key={k} className="contents">
+                                <dt className="text-cyan/60">{k}</dt>
+                                <dd className="text-white">{v}</dd>
+                            </div>
+                        ))}
+                    </dl>
+
+                    <div className="my-6 h-px bg-cyan/25" />
+
+                    <div className="space-y-4">
+                        {status.stats.map((s, i) => (
+                            <div key={s.key} onPointerEnter={() => setHovered(i)} onPointerLeave={() => setHovered(null)}>
+                                <div className="mb-1.5 flex justify-between font-mono text-xs">
+                                    <span className={hovered === i ? 'text-sakura' : 'text-cyan/70'}>{s.key}</span>
+                                    <span className="font-bold text-white">
+                                        <Counter value={s.value} decimals={s.decimals} suffix={s.suffix} />
+                                    </span>
+                                </div>
+                                <div className="h-2 overflow-hidden bg-cyan/10">
+                                    <motion.div
+                                        className="h-full bg-gradient-to-r from-cyan to-aqua shadow-[0_0_12px_#22d3ee]"
+                                        initial={{ width: 0 }}
+                                        whileInView={{ width: `${(s.value / s.max) * 100}%` }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 1.6, delay: 0.2 + i * 0.12, ease: [0.2, 0.7, 0.2, 1] }}
+                                    />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="my-6 h-px bg-cyan/25" />
+
+                    <p className="mb-2 font-mono text-xs text-cyan/60">TITLES</p>
+                    <div className="flex flex-wrap gap-2">
+                        {status.titles.map((t, i) => (
+                            <motion.span
+                                key={t}
+                                initial={{ opacity: 0, scale: 0.6 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.6 + i * 0.08, type: 'spring' }}
+                                whileHover={{ scale: 1.08, rotate: -2 }}
+                                className="border border-sun/50 bg-sun/10 px-2.5 py-1 font-mono text-[11px] text-sun"
+                            >
+                                【{t}】
+                            </motion.span>
+                        ))}
+                    </div>
+
+                    <div className="mt-6 border-t border-cyan/25 pt-4">
+                        <Typewriter />
+                    </div>
                 </div>
             </motion.div>
-        </SectionWrapper>
+        </div>
+    );
+};
+
+const About = () => {
+    const [popup, setPopup] = useState(null);
+
+    return (
+        <section id="about" className="relative mx-auto max-w-7xl px-5 py-28 md:px-10 md:py-40">
+            <SectionHeader id="about" title="Player profile." kicker="Developer by day, swimmer by dawn, anime watcher by night." />
+
+            <div className="grid items-start gap-14 lg:grid-cols-[1fr_1.05fr]">
+                <div className="space-y-6 text-lg leading-relaxed text-white md:text-xl">
+                    <ScrollText
+                        segments={[
+                            ["Hey, I'm"],
+                            ['Parth.', 'font-semibold text-aqua'],
+                            [
+                                "I'm a computer science undergrad specialising in AI/ML, and I like building things people actually use: sports apps used by 500+ athletes, and pipelines that cut a full day of processing down to half an hour.",
+                            ],
+                        ]}
+                    />
+                    <ScrollText
+                        segments={[
+                            ['I work across the stack:'],
+                            ['React, React Native, Node and Python,', 'text-aqua'],
+                            [
+                                "with a soft spot for interfaces that feel as smooth as the Apple ones I grew up admiring. Away from the keyboard you'll find me in the pool, on the volleyball court, or a few episodes deep into an anime arc.",
+                            ],
+                        ]}
+                    />
+
+                    <div className="pt-4">
+                        <p className="mb-4 font-mono text-xs uppercase tracking-[0.3em] text-aqua">Passive skills</p>
+                        <div className="space-y-3">
+                            {status.passives.map((p, i) => (
+                                <motion.button
+                                    key={p.name}
+                                    initial={{ opacity: 0, x: -30 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: i * 0.1 }}
+                                    whileHover={{ x: 8 }}
+                                    onClick={() => setPopup(p)}
+                                    data-cursor="Equip"
+                                    className="glass flex w-full items-center gap-4 rounded-2xl p-4 text-left"
+                                >
+                                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-sakura to-[#ff9a5c] font-jp text-lg font-black text-white">
+                                        {['速', '錬', '集'][i]}
+                                    </span>
+                                    <span>
+                                        <span className="block text-base font-semibold text-white">{p.name}</span>
+                                        <span className="block text-sm text-white/55">{p.desc}</span>
+                                    </span>
+                                </motion.button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <StatusWindow />
+            </div>
+
+            <AnimatePresence>
+                {popup && (
+                    <motion.div
+                        className="fixed inset-0 z-[80] grid place-items-center bg-black/50 px-4 backdrop-blur-sm"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setPopup(null)}
+                    >
+                        <motion.div
+                            initial={{ scaleY: 0 }}
+                            animate={{ scaleY: 1 }}
+                            exit={{ scaleY: 0 }}
+                            transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+                            className="w-full max-w-sm border border-cyan/70 bg-[#041a2e]/95 p-6 text-center font-mono shadow-[0_0_60px_rgba(34,211,238,.4)]"
+                        >
+                            <p className="text-xs tracking-[0.4em] text-cyan">[ SKILL ACQUIRED ]</p>
+                            <p className="mt-4 font-display text-3xl font-extrabold text-white">{popup.name}</p>
+                            <p className="mt-2 text-sm text-white/70">{popup.desc}</p>
+                            <p className="mt-6 text-[10px] text-white/40">click anywhere to close</p>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </section>
     );
 };
 

@@ -1,313 +1,255 @@
-import React from 'react';
-import SectionWrapper from '../ui/SectionWrapper';
-import { Card, CardContent, CardFooter, CardHeader } from '../ui/Card';
-import { Button } from '../ui/Button';
-import { Github, ExternalLink, Smartphone, Globe, Lock, Brain, MessageSquare, ShoppingBag, Zap, Flame, Star } from 'lucide-react';
-import { cn } from '../../utils/cn';
-import { motion } from 'framer-motion';
+import { memo, useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { ArrowUpRight, Github, Lock } from 'lucide-react';
+import SectionHeader from '../ui/SectionHeader';
+import IPhone from '../projects/IPhone';
+import { useIsDesktop } from '../../lib/media';
+import { moreProjects, projects as allProjects } from '../../data/portfolio';
 
-const BrowserMockup = ({ children, className }) => (
-    <div className={cn("w-full h-full bg-[#1e1e20] rounded-t-xl border border-white/10 flex flex-col overflow-hidden shadow-2xl", className)}>
-        <div className="h-8 bg-[#2a2a2c] border-b border-white/5 flex items-center px-4 gap-2">
-            <div className="w-3 h-3 rounded-full bg-red-500/80" />
-            <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-            <div className="w-3 h-3 rounded-full bg-green-500/80" />
-        </div>
-        <div className="flex-1 bg-[#121212] relative p-4 flex items-center justify-center">
-            {children}
-            <div className="absolute inset-0 opacity-20 pointer-events-none">
-                <div className="w-1/3 h-2 bg-white/20 rounded-full absolute top-8 left-8" />
-                <div className="w-1/4 h-2 bg-white/10 rounded-full absolute top-12 left-8" />
-                <div className="w-full h-px bg-white/5 absolute top-20 left-0" />
-            </div>
-        </div>
-    </div>
-);
+const projects = allProjects.filter((p) => p.featured);
+const others = [...allProjects.filter((p) => !p.featured), ...moreProjects];
 
-const PhoneMockup = () => (
-    <div className="w-[200px] h-[400px] bg-[#09090b] border-[8px] border-[#27272a] rounded-[2.5rem] shadow-2xl overflow-hidden relative mx-auto">
-        {/* Notch/Dynamic Island */}
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-6 bg-black rounded-full z-20 flex items-center justify-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#1e1e20]" />
-            <div className="w-12 h-1.5 rounded-full bg-[#1e1e20]" />
-        </div>
+// Tilts the phone toward the cursor and keeps it gently floating.
+const TiltPhone = ({ children }) => {
+    const mx = useMotionValue(0);
+    const my = useMotionValue(0);
+    const rotateY = useSpring(useTransform(mx, [-1, 1], [-16, 16]), { stiffness: 120, damping: 14 });
+    const rotateX = useSpring(useTransform(my, [-1, 1], [12, -12]), { stiffness: 120, damping: 14 });
 
-        {/* Screen Content */}
-        <div className="w-full h-full bg-[#000000] flex flex-col pt-12 px-4 relative">
-            <div className="flex justify-between items-center mb-6">
-                <div className="text-white font-bold text-lg">My Tasks</div>
-                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs">JP</div>
-            </div>
-
-            <div className="space-y-3">
-                <div className="w-full p-3 bg-white/5 rounded-xl border border-white/5 flex items-center gap-3">
-                    <div className="w-5 h-5 rounded-full border-2 border-primary/50 flex items-center justify-center">
-                        <div className="w-2.5 h-2.5 rounded-full bg-primary" />
-                    </div>
-                    <div className="flex-1">
-                        <div className="h-2 w-20 bg-white/20 rounded-full mb-1.5" />
-                        <div className="h-1.5 w-12 bg-white/10 rounded-full" />
-                    </div>
-                </div>
-
-                <div className="w-full p-3 bg-white/5 rounded-xl border border-white/5 flex items-center gap-3 opacity-80">
-                    <div className="w-5 h-5 rounded-full border-2 border-white/20" />
-                    <div className="flex-1">
-                        <div className="h-2 w-24 bg-white/20 rounded-full mb-1.5" />
-                        <div className="h-1.5 w-16 bg-white/10 rounded-full" />
-                    </div>
-                </div>
-
-                <div className="w-full p-3 bg-white/5 rounded-xl border border-white/5 flex items-center gap-3 opacity-60">
-                    <div className="w-5 h-5 rounded-full border-2 border-white/20" />
-                    <div className="flex-1">
-                        <div className="h-2 w-16 bg-white/20 rounded-full mb-1.5" />
-                        <div className="h-1.5 w-10 bg-white/10 rounded-full" />
-                    </div>
-                </div>
-
-                {/* Floating Action Button */}
-                <div className="absolute bottom-6 right-4 w-12 h-12 bg-primary rounded-full shadow-lg shadow-primary/20 flex items-center justify-center text-white text-2xl font-light">
-                    +
-                </div>
-            </div>
-        </div>
-    </div>
-);
-
-const StreaQPhoneMockup = () => (
-    <div className="w-[200px] h-[400px] bg-[#09090b] border-[8px] border-[#27272a] rounded-[2.5rem] shadow-2xl overflow-hidden relative mx-auto">
-        {/* Notch/Dynamic Island */}
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-6 bg-black rounded-full z-20 flex items-center justify-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#1e1e20]" />
-            <div className="w-12 h-1.5 rounded-full bg-[#1e1e20]" />
-        </div>
-
-        {/* Screen Content */}
-        <div className="w-full h-full bg-[#000000] flex flex-col pt-12 px-4 relative">
-            <div className="mb-6">
-                <div className="text-white font-bold text-lg">My Streaks</div>
-            </div>
-
-            <div className="space-y-2">
-                {/* GitHub Streak */}
-                <div className="w-full p-3 bg-gradient-to-r from-cyan-500/10 to-transparent rounded-xl border border-cyan-500/30 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <Flame size={18} className="text-red-400" />
-                        <div className="flex-1">
-                            <div className="h-2 w-16 bg-white/30 rounded-full" />
-                        </div>
-                    </div>
-                    <div className="text-cyan-400 font-bold text-sm">42</div>
-                </div>
-
-                {/* LeetCode Streak */}
-                <div className="w-full p-3 bg-gradient-to-r from-orange-500/10 to-transparent rounded-xl border border-orange-500/30 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <Zap size={18} className="text-yellow-400" />
-                        <div className="flex-1">
-                            <div className="h-2 w-14 bg-white/30 rounded-full" />
-                        </div>
-                    </div>
-                    <div className="text-orange-400 font-bold text-sm">28</div>
-                </div>
-
-                {/* Codeforces Streak */}
-                <div className="w-full p-3 bg-gradient-to-r from-blue-500/10 to-transparent rounded-xl border border-blue-500/30 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <Star size={18} className="text-blue-400" />
-                        <div className="flex-1">
-                            <div className="h-2 w-12 bg-white/30 rounded-full" />
-                        </div>
-                    </div>
-                    <div className="text-blue-400 font-bold text-sm">15</div>
-                </div>
-            </div>
-        </div>
-    </div>
-);
-
-const Projects = () => {
-    const projectsList = [
-        {
-            title: 'Knowra',
-            type: 'AI Platform',
-            description: 'A production-ready Retrieval-Augmented Generation (RAG) system that turns your GitHub repositories and local documents into an interactive, AI-powered knowledge base. Features GitHub ingestion, deep-scan PDF analysis, verified sources, and extreme lazy loading optimization.',
-            tags: ['React', 'FastAPI', 'FAISS', 'Groq', 'Tailwind', 'Framer Motion'],
-            links: {
-                demo: 'https://knowra-lemon.vercel.app/',
-                repo: 'https://github.com/KhanjarSingh/Knowra'
-            },
-            visual: 'browser',
-            icon: <Brain size={48} />,
-            color: 'from-amber-500 to-orange-500'
-        },
-        {
-            title: 'StreaQ',
-            type: 'Productivity App',
-            description: 'A streak tracking application that reminds you to complete daily tasks like GitHub commits, LeetCode problems, and Codeforces challenges. Stay consistent and motivated with streak management and permission tracking for your coding goals.',
-            tags: ['React', 'JavaScript', 'Streak Tracking', 'Task Management'],
-            links: {
-                demo: '#',
-                repo: 'https://github.com/KhanjarSingh/StreaQ.git'
-            },
-            visual: 'mobile',
-            icon: <Zap size={48} />,
-            color: 'from-cyan-500 to-blue-500'
-        },
-        {
-            title: 'Codehive',
-            type: 'Web Platform',
-            description: 'Full-stack community platform for developers to share knowledge. Features real-time discussions, code highlighting, and a robust reputation system.',
-            tags: ['React', 'Node.js', 'MongoDB'],
-            links: {
-                demo: 'https://codehive-zfnt.vercel.app/',
-                repo: 'https://github.com/KhanjarSingh/Codehive'
-            },
-            visual: 'browser',
-            icon: <MessageSquare size={48} />,
-            color: 'from-blue-500 to-cyan-500'
-        },
-        {
-            title: 'QuestLog',
-            type: 'Gamified Todo App',
-            description: 'A gamified task management mobile application built with React Native and Expo. Turn your daily tasks into epic quests and level up as you complete them! Features XP system, leaderboard, streak tracking, and priority-based rewards for completing quests.',
-            tags: ['React Native', 'Expo', 'Gamification', 'Streak Tracking', 'Mobile UX'],
-            links: {
-                demo: 'https://questlog.expo.app/',
-                repo: 'https://github.com/KhanjarSingh/QuestLog'
-            },
-            visual: 'mobile',
-            icon: <Smartphone size={48} />,
-            color: 'from-purple-500 to-pink-500'
-        },
-        {
-            title: 'Random Password',
-            type: 'Web Tool',
-            description: 'Advanced password generator with entropy analysis. Allows users to generate cryptographically strong passwords with custom rulesets.',
-            tags: ['React', 'Crypto API', 'Tailwind', 'Vite'],
-            links: {
-                demo: 'https://randompasswordgenerator-kappa.vercel.app/',
-                repo: 'https://github.com/KhanjarSingh/Random-Password-Generator'
-            },
-            visual: 'browser',
-            icon: <Lock size={48} />,
-            color: 'from-green-500 to-emerald-500'
-        },
-        {
-            title: 'AInalyst',
-            type: 'AI Analytics',
-            description: 'AI-powered market intelligence dashboard. Analyzes startup competition and funding data using Gemini API to provide actionable insights.',
-            tags: ['Next.js', 'Gemini AI', 'Data Viz', 'Python'],
-            links: {
-                demo: 'https://ainalyst.vercel.app/',
-                repo: 'https://github.com/KhanjarSingh/AInalyst'
-            },
-            visual: 'browser',
-            icon: <Brain size={48} />,
-            color: 'from-violet-500 to-purple-500'
-        },
-        {
-            title: 'Kalakriti',
-            type: 'E-commerce Website',
-            description: 'A boutique e-commerce platform showcasing traditional Indian attire. Group project focused on UI/UX design with responsive layouts and modern shopping experience.',
-            tags: ['HTML', 'CSS', 'JavaScript', 'UI/UX'],
-            links: {
-                demo: 'https://kalakriti-phi.vercel.app/',
-                repo: 'https://github.com/KhanjarSingh/UI-Ninjas'
-            },
-            visual: 'browser',
-            icon: <ShoppingBag size={48} />,
-            color: 'from-pink-500 to-rose-500'
-        }
-    ];
+    useEffect(() => {
+        const move = (e) => {
+            mx.set((e.clientX / window.innerWidth) * 2 - 1);
+            my.set((e.clientY / window.innerHeight) * 2 - 1);
+        };
+        window.addEventListener('pointermove', move, { passive: true });
+        return () => window.removeEventListener('pointermove', move);
+    }, [mx, my]);
 
     return (
-        <SectionWrapper id="projects" className="relative">
+        <div style={{ perspective: 1400 }}>
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="text-center mb-16"
+                className="will-change-transform"
+                style={{ rotateX, rotateY }}
+                animate={{ y: [0, -10, 0] }}
+                transition={{ y: { duration: 5, repeat: Infinity, ease: 'easeInOut' } }}
             >
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                    <Globe size={14} />
-                    <span>My Work</span>
-                </div>
-                <h2 className="text-4xl md:text-5xl font-bold font-heading mb-6">
-                    Featured <span className="text-primary">Projects</span>
-                </h2>
-                <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                    A collection of high-impact applications demonstrating my expertise in full-stack engineering and product design.
-                </p>
+                {children}
             </motion.div>
+        </div>
+    );
+};
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {projectsList.map((project, index) => (
-                    <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        className="group bg-secondary/10 border border-white/5 rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] flex flex-col h-full"
+// Mobile: mount a phone's live demo the first time it nears the viewport.
+const InlinePhone = ({ project }) => {
+    const ref = useRef(null);
+    const near = useInView(ref, { margin: '400px', once: true });
+    return (
+        <div ref={ref} className="-mb-20 mt-12 flex justify-center">
+            <IPhone screen={near ? project.screen : null} accent={project.accent} className="origin-top scale-[0.85]" />
+        </div>
+    );
+};
+
+const ProjectBlock = memo(function ProjectBlock({ project, index, onActive, inlinePhone }) {
+    const ref = useRef(null);
+    const inView = useInView(ref, { amount: 0.55 });
+
+    useEffect(() => {
+        if (inView) onActive(index);
+    }, [inView, index, onActive]);
+
+    return (
+        <div ref={ref} className="flex min-h-[85vh] flex-col justify-center py-10">
+            <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-100px' }}
+                transition={{ duration: 0.7, ease: [0.2, 0.7, 0.2, 1] }}
+            >
+                <div className="flex items-center gap-3 font-mono text-xs text-white/40">
+                    <span style={{ color: project.accent }}>{String(index + 1).padStart(2, '0')}</span>
+                    <span className="h-px w-8 bg-white/20" />
+                    <span>{String(projects.length).padStart(2, '0')}</span>
+                    <span className="ml-2 font-jp">{project.jp}</span>
+                </div>
+
+                <h3 className="group relative mt-4 font-display text-5xl font-extrabold tracking-tight text-white md:text-7xl">
+                    <span className="relative z-10">{project.title}</span>
+                    {/* manga-style offset shadow on hover */}
+                    <span
+                        aria-hidden
+                        className="absolute left-0 top-0 -z-0 translate-x-0 translate-y-0 opacity-0 transition-all duration-300 group-hover:translate-x-1.5 group-hover:translate-y-1.5 group-hover:opacity-100"
+                        style={{ color: project.accent }}
                     >
-                        <div className="h-64 bg-black/40 relative overflow-hidden flex items-center justify-center pt-8 px-8 group-hover:bg-black/60 transition-colors">
-                            <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-10 group-hover:opacity-20 transition-opacity`} />
+                        {project.title}
+                    </span>
+                </h3>
+                <p className="mt-3 text-xl font-medium" style={{ color: project.accent }}>
+                    {project.tagline}
+                </p>
+                <p className="mt-5 max-w-lg leading-relaxed text-white/70">{project.description}</p>
 
-                            <div className="transform transition-transform duration-500 group-hover:scale-105 group-hover:-translate-y-2">
-                                {project.visual === 'mobile' ? (
-                                    project.title === 'StreaQ' ? <StreaQPhoneMockup /> : <PhoneMockup />
-                                ) : (
-                                    <BrowserMockup className="w-64 h-48">
-                                        <div className={`text-white/20 group-hover:text-white/80 transition-colors duration-500`}>
-                                            {project.icon}
-                                        </div>
-                                    </BrowserMockup>
-                                )}
-                            </div>
-                        </div>
+                <div className="mt-6 flex flex-wrap gap-2">
+                    {project.stats.map((s) => (
+                        <span key={s} className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-white">
+                            {s}
+                        </span>
+                    ))}
+                </div>
+                <p className="mt-4 font-mono text-xs text-white/45">{project.tech.join('  /  ')}</p>
 
-                        <div className="p-6 flex flex-col flex-1">
-                            <div className="mb-4">
-                                <span className={`text-xs font-bold uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r ${project.color}`}>
-                                    {project.type}
-                                </span>
-                                <h3 className="text-2xl font-bold text-white mt-1 group-hover:text-primary transition-colors">
-                                    {project.title}
-                                </h3>
-                            </div>
+                <div className="mt-8 flex flex-wrap gap-3">
+                    {project.links.demo && (
+                        <a
+                            href={project.links.demo}
+                            target="_blank"
+                            rel="noreferrer"
+                            data-cursor="Live"
+                            className="group flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-black"
+                            style={{ background: project.accent }}
+                        >
+                            Live demo <ArrowUpRight size={16} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                        </a>
+                    )}
+                    {project.links.repo ? (
+                        <a
+                            href={project.links.repo}
+                            target="_blank"
+                            rel="noreferrer"
+                            data-cursor="Code"
+                            className="glass flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-white"
+                        >
+                            <Github size={16} /> Source
+                        </a>
+                    ) : (
+                        <span className="flex items-center gap-2 rounded-full border border-white/10 px-5 py-3 text-sm text-white/45">
+                            <Lock size={14} /> Client code · private
+                        </span>
+                    )}
+                </div>
 
-                            <p className="text-muted-foreground text-sm leading-relaxed mb-6 flex-1">
-                                {project.description}
-                            </p>
+                {/* Phone inline on small screens (not mounted on desktop, where the sticky phone is used) */}
+                {inlinePhone && <InlinePhone project={project} />}
+            </motion.div>
+        </div>
+    );
+});
 
-                            <div className="flex flex-wrap gap-2 mb-6">
-                                {project.tags.map(tag => (
-                                    <span key={tag} className="text-xs px-2 py-1 rounded bg-white/5 border border-white/5 text-muted-foreground">
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
-
-                            <div className="flex items-center gap-3 mt-auto">
-                                <Button size="sm" variant="default" className="flex-1 bg-white text-black hover:bg-white/90 font-semibold" asChild>
-                                    <a href={project.links.demo} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-                                        <ExternalLink size={14} /> Live Demo
-                                    </a>
-                                </Button>
-                                <Button size="sm" variant="outline" className="flex-1 border-white/10 hover:bg-white/5" asChild>
-                                    <a href={project.links.repo} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                                        <Github size={14} /> Code
-                                    </a>
-                                </Button>
-                            </div>
+// Everything else, revealed only if a visitor wants more.
+const MoreProjects = () => {
+    const [open, setOpen] = useState(false);
+    return (
+        <div className="mt-16 md:mt-24">
+            <div className="flex justify-center">
+                <motion.button
+                    onClick={() => setOpen((o) => !o)}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    data-cursor={open ? 'Less' : 'More'}
+                    aria-expanded={open}
+                    className="glass flex items-center gap-3 rounded-full px-6 py-3.5 text-sm font-semibold text-white"
+                >
+                    {open ? 'Show less' : `See ${others.length} more projects`}
+                    <motion.span animate={{ rotate: open ? 180 : 0 }} className="inline-block text-aqua">
+                        ↓
+                    </motion.span>
+                </motion.button>
+            </div>
+            <AnimatePresence initial={false}>
+                {open && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
+                        className="overflow-hidden"
+                    >
+                        <div className="grid gap-4 pt-10 sm:grid-cols-2 lg:grid-cols-4">
+                            {others.map((p, i) => (
+                                <motion.article
+                                    key={p.title}
+                                    initial={{ opacity: 0, y: 24 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.1 + i * 0.07 }}
+                                    whileHover={{ y: -6 }}
+                                    className="glass flex flex-col rounded-3xl p-5"
+                                >
+                                    <span className="h-1.5 w-10 rounded-full" style={{ background: p.accent ?? '#5eead4' }} />
+                                    <h4 className="mt-4 font-display text-xl font-bold text-white">{p.title}</h4>
+                                    <p className="mt-2 flex-1 text-sm leading-relaxed text-white/60">{p.tagline}</p>
+                                    <p className="mt-4 font-mono text-[10px] text-white/40">{p.tech.join(' · ')}</p>
+                                    <div className="mt-4 flex gap-2">
+                                        {p.links.demo && (
+                                            <a href={p.links.demo} target="_blank" rel="noreferrer" className="flex items-center gap-1 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-black">
+                                                Live <ArrowUpRight size={12} />
+                                            </a>
+                                        )}
+                                        {p.links.repo && (
+                                            <a href={p.links.repo} target="_blank" rel="noreferrer" className="flex items-center gap-1 rounded-full border border-white/15 px-3 py-1.5 text-xs text-white/80">
+                                                <Github size={12} /> Code
+                                            </a>
+                                        )}
+                                    </div>
+                                </motion.article>
+                            ))}
                         </div>
                     </motion.div>
-                ))}
+                )}
+            </AnimatePresence>
+        </div>
+    );
+};
+
+const Projects = () => {
+    const [active, setActive] = useState(0);
+    const desktop = useIsDesktop();
+    const project = projects[active];
+
+    return (
+        <section id="projects" className="relative mx-auto max-w-7xl px-5 py-28 md:px-10 md:py-40">
+            <SectionHeader id="projects" title="Shipped." kicker="My four favourites. Scroll and the phone switches apps; the screens are live, so tap around." />
+
+            <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:gap-24">
+                <div>
+                    {projects.map((p, i) => (
+                        <ProjectBlock key={p.id} project={p} index={i} onActive={setActive} inlinePhone={!desktop} />
+                    ))}
+                </div>
+
+                {desktop && (
+                <div>
+                    <div className="sticky top-0 flex h-screen items-center">
+                        <div className="relative">
+                            <AnimatePresence mode="wait">
+                                <motion.p
+                                    key={project.id}
+                                    initial={{ opacity: 0, y: 40 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -40 }}
+                                    className="text-outline pointer-events-none absolute -left-24 -top-16 font-display text-[11rem] font-extrabold leading-none opacity-20"
+                                >
+                                    {String(active + 1).padStart(2, '0')}
+                                </motion.p>
+                            </AnimatePresence>
+                            <TiltPhone>
+                                <IPhone screen={project.screen} accent={project.accent} />
+                            </TiltPhone>
+                            <div className="mt-6 flex justify-center gap-2">
+                                {projects.map((p, i) => (
+                                    <motion.span
+                                        key={p.id}
+                                        className="h-1.5 rounded-full"
+                                        animate={{ width: i === active ? 28 : 6, background: i === active ? p.accent : 'rgba(255,255,255,.25)' }}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                )}
             </div>
-        </SectionWrapper>
+            <MoreProjects />
+        </section>
     );
 };
 
