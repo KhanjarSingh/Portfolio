@@ -112,7 +112,7 @@ const Spotlight = () => {
                             />
                             <kbd className="rounded-md bg-white/10 px-2 py-0.5 font-mono text-[10px] text-white/50">esc</kbd>
                         </div>
-                        <ul className="max-h-[50vh] overflow-y-auto p-2" data-lenis-prevent>
+                        <ul className="max-h-[50vh] overflow-y-auto p-2">
                             {results.length === 0 && (
                                 <li className="px-4 py-8 text-center text-sm text-white/40">Nothing down here. Try “github” or “limit”.</li>
                             )}

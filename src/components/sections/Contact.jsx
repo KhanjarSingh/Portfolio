@@ -131,7 +131,7 @@ const Messages = () => {
 
     return (
         <div ref={box} className="flex h-[560px] flex-col">
-            <div ref={scroller} data-lenis-prevent className="flex-1 space-y-2 overflow-y-auto px-4 py-5">
+            <div ref={scroller} className="flex-1 space-y-2 overflow-y-auto px-4 py-5">
                 <p className="pb-2 text-center text-[11px] text-white/35">iMessage · Today</p>
                 {msgs.map((m, i) =>
                     m.from === 'status' ? (
