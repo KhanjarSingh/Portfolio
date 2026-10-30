@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { AnimatePresence, motion, useInView, useMotionValue, useMotionValueEvent, useScroll, useSpring, useTransform } from 'framer-motion';
 import { ArrowUpRight, Github, Lock } from 'lucide-react';
 import SectionHeader from '../ui/SectionHeader';
 import IPhone from '../projects/IPhone';
@@ -39,18 +39,7 @@ const TiltPhone = ({ children }) => {
     );
 };
 
-// Mobile: mount a phone's live demo the first time it nears the viewport.
-const InlinePhone = ({ project }) => {
-    const ref = useRef(null);
-    const near = useInView(ref, { margin: '400px', once: true });
-    return (
-        <div ref={ref} className="-mb-20 mt-12 flex justify-center">
-            <IPhone screen={near ? project.screen : null} accent={project.accent} className="origin-top scale-[0.85]" />
-        </div>
-    );
-};
-
-const ProjectBlock = memo(function ProjectBlock({ project, index, onActive, inlinePhone }) {
+const ProjectBlock = memo(function ProjectBlock({ project, index, onActive }) {
     const ref = useRef(null);
     const inView = useInView(ref, { amount: 0.55 });
 
@@ -128,12 +117,141 @@ const ProjectBlock = memo(function ProjectBlock({ project, index, onActive, inli
                     )}
                 </div>
 
-                {/* Phone inline on small screens (not mounted on desktop, where the sticky phone is used) */}
-                {inlinePhone && <InlinePhone project={project} />}
             </motion.div>
         </div>
     );
 });
+
+// Phones: one pinned screen. Scrolling swaps the project, the phone changes app
+// and the text rolls in, like the desktop sticky phone but on a single screen.
+const PHONE = { w: 300, h: 620 };
+
+const RollTitle = ({ text, color }) => (
+    <h3 className="flex overflow-hidden font-display text-4xl font-extrabold tracking-tight text-white" aria-label={text}>
+        {text.split('').map((ch, i) => (
+            <motion.span
+                key={i}
+                aria-hidden
+                className="inline-block whitespace-pre"
+                initial={{ y: '100%', opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: '-100%', opacity: 0 }}
+                transition={{ duration: 0.35, delay: i * 0.025, ease: [0.2, 0.8, 0.2, 1] }}
+                style={i === 0 ? { color } : undefined}
+            >
+                {ch}
+            </motion.span>
+        ))}
+    </h3>
+);
+
+const MobileShowcase = () => {
+    const ref = useRef(null);
+    const [active, setActive] = useState(0);
+    const [scale, setScale] = useState(0.5);
+    const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] });
+
+    useMotionValueEvent(scrollYProgress, 'change', (v) => {
+        const i = Math.min(projects.length - 1, Math.max(0, Math.floor(v * projects.length)));
+        setActive((a) => (a === i ? a : i));
+    });
+
+    // size the phone to the screen height so everything fits in one view
+    useEffect(() => {
+        const fit = () => setScale(Math.min(0.62, (window.innerHeight * 0.4) / PHONE.h));
+        fit();
+        window.addEventListener('resize', fit);
+        return () => window.removeEventListener('resize', fit);
+    }, []);
+
+    const p = projects[active];
+
+    return (
+        <div ref={ref} className="relative" style={{ height: `${projects.length * 85}svh` }}>
+            <div className="sticky top-0 flex h-[100svh] flex-col justify-center gap-4 pb-6 pt-16">
+                {/* progress */}
+                <div className="flex items-center gap-2">
+                    {projects.map((x, i) => (
+                        <motion.span
+                            key={x.id}
+                            className="h-1 rounded-full"
+                            animate={{ width: i === active ? 32 : 10, backgroundColor: i <= active ? x.accent : 'rgba(255,255,255,.2)' }}
+                            transition={{ duration: 0.4 }}
+                        />
+                    ))}
+                    <span className="ml-auto font-mono text-[11px] text-white/45">
+                        {String(active + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
+                    </span>
+                </div>
+
+                {/* the phone: its screen transitions between apps */}
+                <div className="flex justify-center">
+                    <div style={{ width: PHONE.w * scale, height: PHONE.h * scale }}>
+                        <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left' }}>
+                            <IPhone screen={p.screen} accent={p.accent} />
+                        </div>
+                    </div>
+                </div>
+
+                {/* the text: rolls out and back in on every change. Fixed height so the phone never shifts. */}
+                <div className="h-[210px]">
+                <AnimatePresence mode="wait" initial={false}>
+                    <motion.div key={p.id} exit={{ opacity: 0, transition: { duration: 0.2 } }}>
+                        <div className="flex items-center gap-2 font-mono text-[11px] text-white/45">
+                            <span style={{ color: p.accent }}>{p.jp}</span>
+                            <span className="h-px w-6 bg-white/20" />
+                            {p.tech.slice(0, 3).join(' · ')}
+                        </div>
+                        <RollTitle text={p.title} color={p.accent} />
+                        <motion.p
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.15, duration: 0.4 }}
+                            className="mt-1 text-base font-medium"
+                            style={{ color: p.accent }}
+                        >
+                            {p.tagline}
+                        </motion.p>
+                        <motion.div
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.25, duration: 0.4 }}
+                            className="mt-3 flex flex-wrap gap-1.5"
+                        >
+                            {p.stats.map((st) => (
+                                <span key={st} className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold text-white">
+                                    {st}
+                                </span>
+                            ))}
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.35, duration: 0.4 }}
+                            className="mt-4 flex gap-2"
+                        >
+                            {p.links.demo && (
+                                <a href={p.links.demo} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold text-black" style={{ background: p.accent }}>
+                                    Live demo <ArrowUpRight size={15} />
+                                </a>
+                            )}
+                            {p.links.repo ? (
+                                <a href={p.links.repo} target="_blank" rel="noreferrer" className="glass flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold text-white">
+                                    <Github size={15} /> Source
+                                </a>
+                            ) : (
+                                <span className="flex items-center gap-1.5 rounded-full border border-white/10 px-4 py-2 text-sm text-white/45">
+                                    <Lock size={13} /> Private
+                                </span>
+                            )}
+                        </motion.div>
+                    </motion.div>
+                </AnimatePresence>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 // Everything else, revealed only if a visitor wants more.
 const MoreProjects = () => {
@@ -209,14 +327,16 @@ const Projects = () => {
         <section id="projects" className="relative mx-auto max-w-7xl px-5 py-28 md:px-10 md:py-40">
             <SectionHeader id="projects" title="Projects." kicker="My four favourites. Scroll and the phone switches apps; the screens are live, so tap around." />
 
+            {!desktop && <MobileShowcase />}
+
+            {desktop && (
             <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:gap-24">
                 <div>
                     {projects.map((p, i) => (
-                        <ProjectBlock key={p.id} project={p} index={i} onActive={setActive} inlinePhone={!desktop} />
+                        <ProjectBlock key={p.id} project={p} index={i} onActive={setActive} />
                     ))}
                 </div>
 
-                {desktop && (
                 <div>
                     <div className="sticky top-0 flex h-screen items-center">
                         <div className="relative">
@@ -246,8 +366,8 @@ const Projects = () => {
                         </div>
                     </div>
                 </div>
-                )}
             </div>
+            )}
             <MoreProjects />
         </section>
     );
