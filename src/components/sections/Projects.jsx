@@ -125,6 +125,8 @@ const ProjectBlock = memo(function ProjectBlock({ project, index, onActive }) {
 // Phones: one pinned screen. Scrolling swaps the project, the phone changes app
 // and the text rolls in, like the desktop sticky phone but on a single screen.
 const PHONE = { w: 300, h: 620 };
+// scroll distance per project, in svh: about one natural swipe
+const STEP = 40;
 
 const RollTitle = ({ text, color }) => (
     <h3 className="flex overflow-hidden font-display text-4xl font-extrabold tracking-tight text-white" aria-label={text}>
@@ -152,7 +154,8 @@ const MobileShowcase = () => {
     const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] });
 
     useMotionValueEvent(scrollYProgress, 'change', (v) => {
-        const i = Math.min(projects.length - 1, Math.max(0, Math.floor(v * projects.length)));
+        // switch halfway between snap points, so each snap lands squarely on one project
+        const i = Math.min(projects.length - 1, Math.max(0, Math.round(v * (projects.length - 1))));
         setActive((a) => (a === i ? a : i));
     });
 
@@ -167,7 +170,11 @@ const MobileShowcase = () => {
     const p = projects[active];
 
     return (
-        <div ref={ref} className="relative" style={{ height: `${projects.length * 85}svh` }}>
+        <div ref={ref} className="relative" style={{ height: `${100 + (projects.length - 1) * STEP}svh` }}>
+            {/* gentle snap points (html.lite uses proximity snapping), one per project */}
+            {projects.map((x, i) => (
+                <span key={x.id} aria-hidden className="pointer-events-none absolute left-0 h-px w-px" style={{ top: `${i * STEP}svh`, scrollSnapAlign: 'start' }} />
+            ))}
             <div className="sticky top-0 flex h-[100svh] flex-col justify-center gap-4 pb-6 pt-16">
                 {/* progress */}
                 <div className="flex items-center gap-2">
