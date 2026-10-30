@@ -23,7 +23,7 @@ const Summary = ({ parts, color }) => (
 );
 
 const Role = ({ job }) => {
-    const [c1, c2] = job.color;
+    const [c1] = job.color;
 
     return (
         <li className="relative grid gap-3 pl-10 md:grid-cols-[180px_1fr] md:gap-12 md:pl-0">
@@ -34,7 +34,7 @@ const Role = ({ job }) => {
                 viewport={{ once: true, margin: '-30% 0px' }}
                 transition={{ type: 'spring', stiffness: 400, damping: 18 }}
                 className="absolute left-[7px] top-7 h-[18px] w-[18px] rounded-full border-[3px] border-[#061420] md:left-[195px]"
-                style={{ background: c1, boxShadow: `0 0 0 4px ${c1}33, 0 0 18px ${c1}` }}
+                style={{ background: c1, boxShadow: `0 0 0 4px ${c1}26` }}
             />
 
             {/* dates (desktop) */}
@@ -50,16 +50,21 @@ const Role = ({ job }) => {
                 transition={{ duration: 0.6, ease }}
                 className="glass relative overflow-hidden rounded-3xl p-5 md:p-7"
             >
-                <span className="absolute inset-y-0 left-0 w-1" style={{ background: `linear-gradient(${c1}, ${c2})` }} />
 
                 {/* who */}
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
-                    <span
-                        className="grid h-11 w-11 shrink-0 place-items-center rounded-xl font-display text-lg font-extrabold text-white"
-                        style={{ background: `linear-gradient(135deg, ${c1}, ${c2})` }}
-                    >
-                        {job.monogram}
-                    </span>
+                    {job.logo ? (
+                        <span
+                            className={`grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-xl ring-1 ring-white/10 ${job.logo.fill ? '' : 'p-2'}`}
+                            style={{ background: job.logo.bg }}
+                        >
+                            <img src={job.logo.src} alt={`${job.company} logo`} className="h-full w-full object-contain" loading="lazy" />
+                        </span>
+                    ) : (
+                        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white/[0.08] font-display text-lg font-bold text-white/80 ring-1 ring-white/10">
+                            {job.monogram}
+                        </span>
+                    )}
                     <div className="min-w-[60%] flex-1">
                         <h3 className="font-display text-xl font-bold text-white md:text-2xl">{job.company}</h3>
                         <p className="text-sm text-white/65">{job.role}</p>
@@ -132,7 +137,7 @@ const Experience = () => {
                 {/* the timeline line, filling as you scroll */}
                 <div className="absolute bottom-6 left-[15px] top-6 w-[2px] rounded-full bg-white/10 md:left-[203px]">
                     <motion.div
-                        className="h-full w-full origin-top rounded-full bg-gradient-to-b from-aqua via-cyan to-sakura"
+                        className="h-full w-full origin-top rounded-full bg-white/35"
                         style={LITE ? undefined : { scaleY: fill }}
                     />
                 </div>
