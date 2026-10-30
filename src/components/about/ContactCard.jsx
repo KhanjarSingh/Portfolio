@@ -48,7 +48,7 @@ const ContactCard = () => {
             ref={ref}
             initial="hidden"
             animate={show}
-            className="mx-auto w-full max-w-[440px] overflow-hidden rounded-[34px] border border-white/10 bg-[#0b1620] shadow-[0_40px_100px_-40px_rgba(0,0,0,.9)]"
+            className="mx-auto w-full max-w-[420px] overflow-hidden lg:mr-0 rounded-[34px] border border-white/10 bg-[#0b1620] shadow-[0_40px_100px_-40px_rgba(0,0,0,.9)]"
         >
             {/* Contact Poster: the water rises into the frame, then the name */}
             <motion.div
