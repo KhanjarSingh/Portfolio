@@ -63,6 +63,11 @@ body {
 }
 
 /* Phones: the whole dive as one gradient painted on the page, instead of fixed animated layers */
+/* Phones: snap lightly onto each project in the pinned showcase (only near a snap point) */
+html.lite {
+  scroll-snap-type: y proximity;
+}
+
 html.lite #main {
   background: linear-gradient(180deg, #0a3b4f 0%, #072636 18%, #04121c 45%, #030b16 75%, #010409 100%);
 }
