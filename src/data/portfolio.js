@@ -43,7 +43,6 @@ export const MAX_DEPTH = 120;
 export const status = {
     title: 'Developer',
     focus: 'Web · Mobile · AI',
-    now: 'Freelancing at ZewaFeeds',
     degree: 'B.Tech CSE · AIML',
     college: 'Newton School of Technology',
     classOf: '2028',

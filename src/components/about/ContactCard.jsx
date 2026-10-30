@@ -31,7 +31,6 @@ const ACTIONS = [
 
 const ROWS = [
     ['Role', status.title],
-    ['Now', status.now],
     ['College', status.college],
     ['Degree', `${status.degree} · ${status.classOf}`],
     ['Based in', profile.location],
