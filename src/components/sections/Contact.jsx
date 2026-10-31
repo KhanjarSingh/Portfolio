@@ -108,7 +108,8 @@ const Messages = () => {
                 const res = await fetch(profile.formspree, {
                     method: 'POST',
                     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
+                    // _subject is Formspree's subject line; the email field also becomes the reply-to address
+                    body: JSON.stringify({ ...payload, _subject: `Portfolio message from ${payload.name}` }),
                 });
                 if (!res.ok) throw new Error('failed');
                 setMsgs((m) => [...m, { from: 'status', text: 'Delivered' }]);
