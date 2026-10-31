@@ -16,7 +16,7 @@ export const profile = {
     location: 'Pune, India',
     email: 'parth.k@adypu.edu.in',
     resume: '/Parth_Tandalwade_Resume.pdf',
-    formspree: 'https://formspree.io/f/mvzzoalk',
+    formspree: 'https://formspree.io/f/xoeenpbj',
     socials: {
         github: 'https://github.com/KhanjarSingh',
         linkedin: 'https://www.linkedin.com/in/parth-tandalwade-295882323/',
